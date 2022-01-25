@@ -1,3 +1,3 @@
 export * from './use-case';
 
-export * from './repositories';
+export * from './repository';

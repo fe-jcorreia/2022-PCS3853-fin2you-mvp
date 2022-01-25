@@ -10,7 +10,7 @@ import { Messages } from '@common/locales';
 import {
     Server as AbstractServer,
     IHTTPServerConstructorParams,
-} from '../server';
+} from './server';
 import { IHTTPControllerDescriptor } from '@adapters/REST-controllers';
 
 interface IExpressConstructorParams extends IHTTPServerConstructorParams {

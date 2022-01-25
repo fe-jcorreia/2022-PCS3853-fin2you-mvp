@@ -1,5 +1,5 @@
 version: "3"
-
+# do docker-compose -p fin2you up to run this stack
 services:
   app:
     image: iagosrm/nodejs-poc
@@ -9,7 +9,7 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    # command: ["npm", "run", "dev"]
+    command: ["npm", "start"]
     tty: true
     volumes:
       - .:/app
@@ -22,7 +22,7 @@ services:
       - POSTGRES_PASSWORD=mysecretpassword
       - POSTGRES_DB=test
     volumes:
-      - ${HOME}/nodejs-poc-postgres-data/:/var/lib/postgresql/data
+      - ${HOME}/fin2you-dev-postgres-data/:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s

@@ -11,7 +11,7 @@ import {
 import {
     ExpressServer as FrameworkServer,
     ExpressControllerAdapter as FrameworkControllerAdapter,
-} from '@frameworks/http';
+} from '@/frameworks/http-server';
 
 export enum Dependencies {
     SERVER = 'server',

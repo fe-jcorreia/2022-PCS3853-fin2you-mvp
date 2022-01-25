@@ -6,7 +6,7 @@ import {
   container,
   Dependencies,
 } from "./main/dependency-injection/containers";
-import { ExpressServer } from "./frameworks/http/express/app";
+import { ExpressServer } from "./frameworks/http-server/app";
 import {
   IDatabase,
   IBaseCollection

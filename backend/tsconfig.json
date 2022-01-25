@@ -12,6 +12,7 @@
     "skipLibCheck": true,
     "sourceMap": true,
     "outDir": "./dist",
+    "types": ["node"],
     "moduleResolution": "node",
     "removeComments": true,
     "noImplicitAny": false,
@@ -27,7 +28,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "resolveJsonModule": true,
-    "baseUrl": "src/",
+    "baseUrl": "./src/",
     "paths": {
       "@adapters/repositories": ["adapters/repositories/index.ts"],
       "@adapters/REST-controllers": [
@@ -42,7 +43,7 @@
       ],
       "@frameworks/databases": ["frameworks/databases/index.ts"],
       "@frameworks/http": [
-        "frameworks/http/index.ts"
+        "frameworks/http-server/index.ts"
       ],
       "@common/logger": [
         "common/logger/index.ts"

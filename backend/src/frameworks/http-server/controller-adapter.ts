@@ -3,7 +3,7 @@ import {
     IHTTPController,
     IHTTPControllerPathDescriptor,
 } from '@adapters/REST-controllers';
-import { IHTTPFrameworkAdapter } from '../server';
+import { IHTTPFrameworkAdapter } from './server';
 
 export class ExpressControllerAdapter implements IHTTPFrameworkAdapter {
     adaptControllerFunction(fn: IHTTPController) {
