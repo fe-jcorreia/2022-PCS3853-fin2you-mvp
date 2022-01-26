@@ -1,7 +1,7 @@
 import { IAddUserUseCase } from '@application/use-cases';
 import { IHTTPController, IHTTPControllerDescriptor } from '../ports';
 
-const addUserControllerFactory = ({
+export const addUserControllerFactory = ({
     addUserUseCase,
 }: {
     addUserUseCase: IAddUserUseCase;
@@ -11,6 +11,7 @@ const addUserControllerFactory = ({
         const cpf = body.cpf;
         const name = body.name;
 
+        console.log({body})
         await addUserUseCase.execute({
             email,
             cpf,
@@ -26,9 +27,7 @@ const addUserControllerFactory = ({
     return {
         controller: fn,
         method: 'post',
-        path: [
-            { resource: 'user', isParams: false },
-        ],
+        path: '/user'
     };
 };
 

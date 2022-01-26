@@ -1,7 +1,7 @@
 import { IUserRepository, UserDTO } from '@application/ports';
 import { IBaseCollection, IDatabase } from '../ibase-repository';
 
-class UserRepository implements IUserRepository {
+export class UserRepository implements IUserRepository {
     private readonly collection: IBaseCollection<UserDTO>;
 
     constructor({ db }: { db: IDatabase }) {

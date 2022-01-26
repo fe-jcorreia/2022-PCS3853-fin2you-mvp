@@ -5,7 +5,7 @@ const commonConfig = {
   password: process.env.POSTGRES_PASSWORD,
   // synchronize makes the db reflect the model's code
   // "synchronize": process.env.NODE_ENV !== 'production',
-  synchronize: false,
+  synchronize: true,
   entities: ["src/application/ports/repository/*.ts"],
   migrations: ["src/migrations/*.ts"],
   cli: {

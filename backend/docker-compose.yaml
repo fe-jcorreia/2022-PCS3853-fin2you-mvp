@@ -9,7 +9,7 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    command: ["npm", "start"]
+    # command: ["npm", "run", "dev"]
     tty: true
     volumes:
       - .:/app

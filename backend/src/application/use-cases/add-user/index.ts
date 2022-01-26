@@ -27,7 +27,7 @@ export type IAddUserUseCaseFactory = IUseCaseFactory<
     Return
 >;
 
-const UseCaseFactory: IAddUserUseCaseFactory = ({
+export const UseCaseFactory: IAddUserUseCaseFactory = ({
     userRepository
 }) => {
     return {

@@ -13,9 +13,9 @@ export type IHTTPControllerPathDescriptor = {
 export type IHTTPMethod = 'post' | 'get' | 'put' | 'delete';
 export interface IHTTPControllerDescriptor<
     Controller,
-    Path = IHTTPControllerPathDescriptor
+    // Path = IHTTPControllerPathDescriptor
 > {
     method: IHTTPMethod;
-    path: Path;
+    path: string;
     controller: Controller;
 }

@@ -24,7 +24,6 @@ export abstract class Server {
     _logger: ILogger;
 
     constructor({ db, logger }) {
-        console.log("Super constructor")
 
         this._db = db;
         this._logger = logger;

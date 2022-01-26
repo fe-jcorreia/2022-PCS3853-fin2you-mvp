@@ -14,7 +14,7 @@ import {
 import { IHTTPControllerDescriptor } from '@adapters/REST-controllers';
 
 interface IExpressConstructorParams extends IHTTPServerConstructorParams {
-    expressControllers: IHTTPControllerDescriptor<RequestHandler, string>[];
+    expressControllers: IHTTPControllerDescriptor<RequestHandler>[];
 }
 
 export class ExpressServer extends AbstractServer {

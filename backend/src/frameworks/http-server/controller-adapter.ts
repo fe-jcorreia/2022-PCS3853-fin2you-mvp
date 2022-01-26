@@ -20,17 +20,7 @@ export class ExpressControllerAdapter implements IHTTPFrameworkAdapter {
         };
     }
 
-    adaptPath(pathDescriptor: IHTTPControllerPathDescriptor) {
-        return (
-            '/' +
-            pathDescriptor
-                .map(
-                    (descriptor) =>
-                        `${descriptor.isParams ? ':' : ''}${
-                            descriptor.resource
-                        }${descriptor.isOptional ? '?' : ''}`
-                )
-                .join('/')
-        );
+    adaptPath() {
+        return ''
     }
 }
