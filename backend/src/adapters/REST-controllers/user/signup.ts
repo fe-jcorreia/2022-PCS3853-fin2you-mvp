@@ -1,20 +1,22 @@
-import { IAddUserUseCase } from '@application/use-cases';
+import { ISignUpUseCase } from '@application/use-cases';
 import { IHTTPController, IHTTPControllerDescriptor } from '../ports';
 
-export const addUserControllerFactory = ({
-    addUserUseCase,
+export const SignUpControllerFactory = ({
+    signUpUseCase,
 }: {
-    addUserUseCase: IAddUserUseCase;
+    signUpUseCase: ISignUpUseCase;
 }): IHTTPControllerDescriptor<IHTTPController> => {
     const fn: IHTTPController = async (_, body) => {
         const email = body.email;
         const cpf = body.cpf;
         const name = body.name;
+        const password = body.password;
 
-        await addUserUseCase.execute({
+        await signUpUseCase.execute({
             email,
             cpf,
-            name
+            name,
+            password
         });
 
         return {
@@ -26,8 +28,7 @@ export const addUserControllerFactory = ({
     return {
         controller: fn,
         method: 'post',
-        path: '/user'
+        path: '/signup'
     };
 };
 
-export default addUserControllerFactory;

@@ -3,6 +3,7 @@ interface UserConstructorParams {
     email: string;
     cpf: string;
     name: string;
+    password: string;
 }
 
 export class User {
@@ -10,6 +11,7 @@ export class User {
     private email: string;
     private cpf: string;
     private name: string;
+    private password: string;
 
     constructor(args: Partial<UserConstructorParams>) {
         if(args.id) this.id = args.id;
@@ -18,6 +20,8 @@ export class User {
         this.validateCPF(args.cpf);
         this.cpf = args.cpf!;
         this.name = args.name || "";
+        this.validatePassword(args.password);
+        this.password = args.password!;
     }
 
     validateEmail(email: string | undefined) {
@@ -28,6 +32,14 @@ export class User {
     validateCPF(cpf: string | undefined) {
         if(cpf === 'zoado' || !cpf) throw new Error();
         return true;
+    }
+    
+    validatePassword(password: string | undefined) {
+        if(!password) {
+            throw new Error("Please provide a password");
+        } else if (password.length < 8) {
+            throw new Error("Please provide a password longer than 8 characters");
+        }
     }
 
     getEmail() {
@@ -42,4 +54,7 @@ export class User {
         return this.name;
     }
 
+    getPassword() {
+        return this.password;
+    }
 }

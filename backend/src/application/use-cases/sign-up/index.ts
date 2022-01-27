@@ -3,46 +3,46 @@ import {
     IUseCaseFactory,
     IUserRepository,
     UserDTO,
+    IEncryptionService
 } from '../../ports';
 import { User } from '@domain';
-import {
-    DatabaseError,
-    ObjectNotFoundError,
-} from '@common/errors';
+
 
 export type InputParams = {
     email: string;
     cpf: string;
     name: string;
+    password: string;
 };
 type Return = void;
 type Dependencies = {
     userRepository: IUserRepository;
+    encryptionService: IEncryptionService;
 };
 
-export type IAddUserUseCase = IUseCase<InputParams, Return>;
-export type IAddUserUseCaseFactory = IUseCaseFactory<
+export type ISignUpUseCase = IUseCase<InputParams, Return>;
+export type ISignUpUseCaseFactory = IUseCaseFactory<
     Dependencies,
     InputParams,
     Return
 >;
 
-export const UseCaseFactory: IAddUserUseCaseFactory = ({
-    userRepository
+export const SignUpUseCaseFactory: ISignUpUseCaseFactory = ({
+    userRepository,
+    encryptionService
 }) => {
     return {
-        execute: async ({ email, cpf, name }) => {
-            const user = new User({ email, cpf, name });
+        execute: async ({ email, cpf, name, password }) => {
+            const user = new User({ email, cpf, name, password });
 
             const userDTO = {
                 email: user.getEmail(),
                 cpf: user.getCPF(),
-                name: user.getName()
+                name: user.getName(),
+                password: encryptionService.encrypt(user.getPassword())
             };
 
             await userRepository.insertUser(userDTO)
         },
     };
 };
-
-export default UseCaseFactory;

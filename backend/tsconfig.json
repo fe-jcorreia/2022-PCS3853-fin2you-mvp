@@ -45,6 +45,9 @@
       "@frameworks/http": [
         "frameworks/http-server/index.ts"
       ],
+      "@frameworks/services": [
+        "frameworks/services/index.ts"
+      ],
       "@common/logger": [
         "common/logger/index.ts"
       ],
