@@ -11,7 +11,6 @@ export const addUserControllerFactory = ({
         const cpf = body.cpf;
         const name = body.name;
 
-        console.log({body})
         await addUserUseCase.execute({
             email,
             cpf,

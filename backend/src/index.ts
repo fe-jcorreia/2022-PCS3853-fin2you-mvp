@@ -14,9 +14,9 @@ import { ExpressControllerAdapter } from '@frameworks/http';
   let database;
   console.log("test")
   try {
-    database = new TypeORMDatabase({ 
+    database = new InMemoryDatabase({ 
       dbConnectionName: process.env.NODE_ENV,
-      // logger: { info: console.log, error: console.error }
+      logger: { info: console.log, error: console.error }
     });
     const connected = await database.connect();
     if(connected) {

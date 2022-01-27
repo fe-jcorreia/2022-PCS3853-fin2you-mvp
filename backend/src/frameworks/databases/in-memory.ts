@@ -18,9 +18,7 @@ export class InMemoryDatabase implements IDatabase {
             'connection to ' + this._connectionName + ' database successful'
         );
         this._db = {
-            products: new InMemoryCollection([]),
-            carts: new InMemoryCollection([]),
-            customers: new InMemoryCollection([]),
+            users: new InMemoryCollection([]),
         };
         return new Promise<boolean>((resolve) => resolve(true));
     }
