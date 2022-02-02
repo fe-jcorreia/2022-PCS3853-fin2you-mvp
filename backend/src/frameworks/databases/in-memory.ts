@@ -51,6 +51,18 @@ class InMemoryCollection<P> implements IBaseCollection<P> {
         });
     }
 
+    getOneByField(field, value) {
+        return new Promise<P>((resolve, reject) => {
+            const entity = this.repository.find((el) => {
+                return (el as { [k: string]: any })[field] === value;
+            });
+            if (!entity) {
+                reject(`Object with ${field} ${value} not found`);
+                return;
+            }
+            resolve(entity);
+        });
+    }
     getAll() {
         return new Promise<P[]>((resolve) => resolve(this.repository));
     }

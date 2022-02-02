@@ -12,7 +12,13 @@ export class User {
     private cpf: string;
     private name: string;
     private password: string;
+    // private extratos: ExtractEntry[];
+    // private categoryTotals: CategoryTotal[];
 
+    // lazer, esportes, igreja
+    // value, id, extractEntries
+    // date, value, receiverCNPJ, paymentMethod, categoryId
+    
     constructor(args: Partial<UserConstructorParams>) {
         if(args.id) this.id = args.id;
         this.validateEmail(args.email);

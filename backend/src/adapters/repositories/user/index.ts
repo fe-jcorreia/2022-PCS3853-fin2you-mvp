@@ -11,7 +11,9 @@ export class UserRepository implements IUserRepository {
     getUserById(userId: string) {
         return this.collection.getOneById(userId);
     }
-
+    getUserByEmail(email: string) {
+        return this.collection.getOneByField('email', email);
+    }
     insertUser(user: UserDTO) {
         return this.collection.insertOne(user);
     }

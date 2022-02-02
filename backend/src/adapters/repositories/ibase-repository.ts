@@ -1,8 +1,9 @@
 export interface IBaseCollection<P> {
-    getOneById: (id: string) => Promise<P>;
-    getAll: () => Promise<P[]>;
-    insertOne: (entity: P) => Promise<P>;
-    updateOne: (id: string, entity: P) => Promise<P>;
+    getOneById: (id: string) => Promise<P | undefined>;
+    getOneByField: (field: string, value: string) => Promise<P | undefined>;
+    getAll: () => Promise<(P|undefined)[]>;
+    insertOne: (entity: P) => Promise<P|undefined>;
+    updateOne: (id: string, entity: P) => Promise<P|undefined>;
 }
 
 export interface IDatabase {
