@@ -1,4 +1,4 @@
-import { Button, Flex, Heading } from "@chakra-ui/react";
+import { Button, Flex, Heading, Link } from "@chakra-ui/react";
 import type { NextPage } from "next";
 
 const Home: NextPage = () => {
@@ -23,7 +23,7 @@ const Home: NextPage = () => {
       <Flex
         maxW="720px"
         mx="auto"
-        h="87vh"
+        h="85vh"
         align="center"
         textAlign="center"
         justifyContent="center"
@@ -48,20 +48,23 @@ const Home: NextPage = () => {
           >
             Conheça nossa empresa
           </Button>
-          <Button
-            _hover={{
-              color: "gray.800",
-              background: "transparent",
-              textDecor: "underline",
-            }}
-            bgColor="blue.800"
-            p="2rem"
-            fontSize="lg"
-            borderRadius="full"
-            color="white"
-          >
-            Quero cuidar do meu dinheiro
-          </Button>
+
+          <Link href="/signup">
+            <Button
+              _hover={{
+                color: "gray.800",
+                background: "transparent",
+                textDecor: "underline",
+              }}
+              bgColor="blue.800"
+              p="2rem"
+              fontSize="lg"
+              borderRadius="full"
+              color="white"
+            >
+              Quero cuidar do meu dinheiro
+            </Button>
+          </Link>
         </Flex>
       </Flex>
     </Flex>
