@@ -1,41 +1,31 @@
 import {
   Button,
-  Checkbox,
-  Flex,
-  FormControl,
-  FormErrorMessage,
   Heading,
   HStack,
   Image,
   Link,
   Text,
-  Textarea,
   useToast,
   VStack,
 } from "@chakra-ui/react";
 import { Input } from "../components/Input";
-import { FiClipboard, FiMail, FiUser, FiLock } from "react-icons/fi";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { FiMail, FiLock } from "react-icons/fi";
+import { SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { NextPage } from "next";
-import { redirect } from "next/dist/server/api-utils";
 
 type LoginAccountFormData = {
-  name: string;
   email: string;
-  cpf: string;
   password: string;
 };
 
 const signInForSchema = yup.object().shape({
-  name: yup.string().required("Nome obrigatório").trim(),
   email: yup
     .string()
     .required("Email obrigatório")
     .email("Precisa ser um email válido")
     .trim(),
-  cpf: yup.string().required("CPF obrigatório").trim(),
   password: yup.string().required("Senha obrigatória").trim(),
 });
 
@@ -50,11 +40,11 @@ const Login: NextPage = () => {
     console.log(values);
 
     toast({
-      title: "Mensagem enviada",
-      description: "Retornaremos assim que possível",
+      title: "Sucesso",
+      description: "Você entrou na sua conta",
       status: "success",
       position: "top-right",
-      duration: 5000,
+      duration: 2000,
       isClosable: true,
     });
     reset();

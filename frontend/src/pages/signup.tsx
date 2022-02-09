@@ -44,11 +44,11 @@ const Signup: NextPage = () => {
     console.log(values);
 
     toast({
-      title: "Mensagem enviada",
-      description: "Retornaremos assim que possível",
+      title: "Sucesso",
+      description: "Sua conta foi criada",
       status: "success",
       position: "top-right",
-      duration: 5000,
+      duration: 2000,
       isClosable: true,
     });
     reset();
