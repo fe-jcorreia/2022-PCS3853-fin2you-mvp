@@ -16,7 +16,7 @@ export const LoginControllerFactory = ({
         });
 
         return {
-            response: { token },
+            response: token,
             statusCode: 201,
         };
     };
