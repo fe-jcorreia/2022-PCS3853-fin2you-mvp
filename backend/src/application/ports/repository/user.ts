@@ -10,5 +10,7 @@ export class UserDTO {
     email: string;
     @Column()
     cpf: string;
+    @Column()
+    hashedPassword: string;
 };
 

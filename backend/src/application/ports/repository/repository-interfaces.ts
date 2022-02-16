@@ -3,7 +3,8 @@ import {
 } from '.';
 
 export interface IUserRepository {
-    getUserById: (id: string) => Promise<UserDTO>;
-    insertUser: (user: UserDTO) => Promise<UserDTO>;
+    getUserById: (id: string) => Promise<UserDTO | undefined>;
+    getUserByEmail: (email: string) => Promise<UserDTO | undefined>;
+    insertUser: (user: UserDTO) => Promise<UserDTO | undefined>;
 }
 

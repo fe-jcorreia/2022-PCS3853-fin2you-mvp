@@ -47,6 +47,11 @@ class TypeORMCollectionAdapter<P> implements IBaseCollection<P> {
     return response;
   }
 
+  async getOneByField(field: string, value: string) {
+    const response = await this.repository.findOne({ [field]: value });
+    return response;
+  }
+
   getManyByIds(ids: string[]) {
     return this.repository.findByIds(ids) // does this fail if one id is not found?
   }
