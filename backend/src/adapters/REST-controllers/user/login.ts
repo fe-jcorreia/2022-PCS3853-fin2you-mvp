@@ -10,13 +10,13 @@ export const LoginControllerFactory = ({
         const email = body.email;
         const password = body.password;
 
-        const token = await loginUseCase.execute({
+        const resp = await loginUseCase.execute({
             email,
             password
         });
 
         return {
-            response: token,
+            response: resp,
             statusCode: 201,
         };
     };

@@ -52,7 +52,7 @@ export const LoginUseCaseFactory: ILoginUseCaseFactory = ({
                 name: userDTO.name
             });
 
-            return { token };
+            return { token, name: userDTO.name, email: userDTO.email };
         },
     };
 };
