@@ -6,6 +6,7 @@ import {
     IEncryptionService
 } from '../../ports';
 import { User } from '@domain';
+import { CategoryDTO } from '@/application/ports/repository/category';
 
 
 export type InputParams = {
@@ -34,14 +35,21 @@ export const SignUpUseCaseFactory: ISignUpUseCaseFactory = ({
     return {
         execute: async ({ email, cpf, name, password }) => {
             const user = new User({ email, cpf, name, password });
+            const categoryDTOs = user.categories.map(category => {
+                const dto = new CategoryDTO();
+                dto.name = category.name
+                return dto;
+            });
 
             const userDTO = {
                 email: user.getEmail(),
                 cpf: user.getCPF(),
                 name: user.getName(),
-                hashedPassword: await encryptionService.encrypt(user.getPassword())
+                hashedPassword: await encryptionService.encrypt(user.getPassword()),
+                extracts: [],
+                categories: categoryDTOs
             };
-
+            console.log(userDTO)
             await userRepository.insertUser(userDTO)
         },
     };

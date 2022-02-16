@@ -66,8 +66,8 @@ class TypeORMCollectionAdapter<P> implements IBaseCollection<P> {
   }
 
   async insertOne(data: P) {
-    const result = await this.repository.insert(data);
-    return (result.generatedMaps as P[])[0];
+    const result = await this.repository.save(data);
+    return result;
   }
 
   async updateOne(id: string, data: P) {

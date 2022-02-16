@@ -1,9 +1,14 @@
+import { Extract } from '../extract';
+import { Category, categories } from '../category';
+
 interface UserConstructorParams {
     id: string;
     email: string;
     cpf: string;
     name: string;
     password: string;
+    extracts: Extract[];
+    categories: Category[];
 }
 
 export class User {
@@ -12,12 +17,8 @@ export class User {
     private cpf: string;
     private name: string;
     private password: string;
-    // private extratos: ExtractEntry[];
-    // private categoryTotals: CategoryTotal[];
-
-    // lazer, esportes, igreja
-    // value, id, extractEntries
-    // date, value, receiverCNPJ, paymentMethod, categoryId
+    public extracts: Extract[];
+    public categories: Category[];
     
     constructor(args: Partial<UserConstructorParams>) {
         if(args.id) this.id = args.id;
@@ -28,6 +29,8 @@ export class User {
         this.name = args.name || "";
         this.validatePassword(args.password);
         this.password = args.password!;
+        this.categories = args.categories || this.createCategories();
+        this.extracts = args.extracts || [];
     }
 
     validateEmail(email: string | undefined) {
@@ -62,5 +65,13 @@ export class User {
 
     getPassword() {
         return this.password;
+    }
+
+    createCategories() {
+        return categories.map(category => (
+            new Category({
+                name: category
+            })
+        ));
     }
 }

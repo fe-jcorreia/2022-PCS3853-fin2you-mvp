@@ -12,9 +12,9 @@ import { BCryptEncryptionService, JWTTokenService } from '@frameworks/services';
 
 (async () => {
   try {
-    const database = new InMemoryDatabase({ 
+    const database = new TypeORMDatabase({ 
       dbConnectionName: process.env.NODE_ENV,
-      logger: { info: console.log, error: console.error }
+      // logger: { info: console.log, error: console.error }
     });
     await database.connect();
 
@@ -41,6 +41,7 @@ import { BCryptEncryptionService, JWTTokenService } from '@frameworks/services';
     const loginController = LoginControllerFactory({
       loginUseCase
     });
+    // const getExtractController = GetExtractsControllerFactory({})
 
     // http server
     const expressAdapter = new ExpressControllerAdapter();
