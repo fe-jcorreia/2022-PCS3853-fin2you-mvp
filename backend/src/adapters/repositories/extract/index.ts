@@ -1,22 +1,20 @@
-import { IUserRepository, UserDTO } from '@application/ports';
+import { IExtractRepository, ExtractDTO } from '@application/ports';
+import { Extract } from '@domain';
 import { IBaseCollection, IDatabase } from '../ibase-repository';
 
-export class UserRepository implements IUserRepository {
-    private readonly collection: IBaseCollection<UserDTO>;
+export class ExtractRepository implements IExtractRepository {
+    private readonly collection: IBaseCollection<ExtractDTO>;
 
     constructor({ db }: { db: IDatabase }) {
         this.collection = db.getCollection('users');
     }
 
-    getUserById(userId: string) {
-        return this.collection.getOneById(userId);
+    getAllFromUser(userId: string) {
+        return this.collection.getManyByField('userId', userId);
     }
-    getUserByEmail(email: string) {
-        return this.collection.getOneByField('email', email);
-    }
-    insertUser(user: UserDTO) {
-        return this.collection.insertOne(user);
+    categorizeExtract(extractId: string, extract: ExtractDTO) {
+        return this.collection.updateOne(extractId, extract);
     }
 }
 
-export default UserRepository;
+export default ExtractRepository;

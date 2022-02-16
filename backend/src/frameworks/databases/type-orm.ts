@@ -75,4 +75,11 @@ class TypeORMCollectionAdapter<P> implements IBaseCollection<P> {
     const result = await this.repository.update(id, data)
     return (result.generatedMaps as P[])[0];
   }
+
+  getManyByField(field: string, value: string) {
+    return this.repository.find({ [field]: value })
+  }
+  insertMany(entities: P[]) {
+    return this.repository.save(entities);
+  }
 }

@@ -10,11 +10,12 @@ export interface IUserRepository {
 }
 
 export interface IExtractRepository {
-    getAllFromUser: (userId: string) => Promise<ExtractDTO[]>;
-    categorizeExtract: (extractID: string) => Promise<boolean>;
+    getAllFromUser: (userId: string) => Promise<ExtractDTO[] | undefined>;
+    addExtracts: (extracts: ExtractDTO[]) => Promise<(ExtractDTO | undefined)[]>
+    categorizeExtract: (extractID: string, extract: ExtractDTO) => Promise<ExtractDTO|undefined>;
 }
 
 export interface ICategoryRepository {
     getAllFromUser: (userId: string) => Promise<ExtractDTO[]>;
-    updateCategorySum: (categoryId: string) => Promise
+    updateCategorySum: (categoryId: string) => Promise<boolean>;
 }
