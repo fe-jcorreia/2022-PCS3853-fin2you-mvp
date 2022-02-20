@@ -1,8 +1,5 @@
 export interface ITokenService {
-    generate: (payload: {
-        email: string;
-        name: string;
-    }) => string;
+    generate: (payload: any) => string;
     verify: (token: string) => Promise<({
         email: string;
         name: string;

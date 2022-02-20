@@ -2,19 +2,19 @@ import {
     IUseCase,
     IUseCaseFactory,
     IUserRepository,
-    UserDTO,
     IEncryptionService,
-    ITokenService
+    ITokenService,
 } from '../../ports';
-import { User } from '@domain';
-
 
 export type LoginInputParams = {
     email: string;
     password: string;
 };
+
 type Return = {
     token: string;
+    email: string;
+    name: string;
 };
 type Dependencies = {
     userRepository: IUserRepository;
@@ -32,7 +32,7 @@ export type ILoginUseCaseFactory = IUseCaseFactory<
 export const LoginUseCaseFactory: ILoginUseCaseFactory = ({
     userRepository,
     encryptionService,
-    tokenService
+    tokenService,
 }) => {
     return {
         execute: async ({ email, password }) => {
@@ -48,6 +48,7 @@ export const LoginUseCaseFactory: ILoginUseCaseFactory = ({
             }
 
             const token = tokenService.generate({
+                userId: userDTO.id || "",
                 email: userDTO.email,
                 name: userDTO.name
             });

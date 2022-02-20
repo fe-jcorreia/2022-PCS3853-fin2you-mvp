@@ -22,5 +22,7 @@ export class UserDTO {
         cascade: true
     })
     extracts: ExtractDTO[]
+    @Column()
+    lastExtractFetch: number;
 };
 

@@ -1,18 +1,28 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
+import { Entity, PrimaryColumn, Column, ManyToOne, RelationId } from "typeorm";
 import { UserDTO } from "./user";
 import { CategoryDTO } from "./category";
 
 @Entity("extracts")
 export class ExtractDTO {
-    @PrimaryGeneratedColumn()
+    @PrimaryColumn()
     id?: string;
     @Column()
-    value: number;
+    amount: number;
     @Column()
-    timeStamp: string;
-    @ManyToOne(() => UserDTO, user => user.extracts)
+    timeStamp: number;
+    @Column()
+    description: string;
+    @Column()
+    type: string;
+
+    @ManyToOne(() => UserDTO)
     user: UserDTO
-    @ManyToOne(() => CategoryDTO, category => category.extracts)
+    @RelationId((user: UserDTO) => user.extracts)
+    userId: string;
+    
+    @ManyToOne(() => CategoryDTO, /*, {eager: true}*/)
     category: CategoryDTO
+    @RelationId((category: CategoryDTO) => category.extracts)
+    categoryId: string;
 };
 

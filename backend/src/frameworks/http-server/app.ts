@@ -14,7 +14,9 @@ import {
 import { IHTTPControllerDescriptor } from '@adapters/REST-controllers';
 
 interface IExpressConstructorParams extends IHTTPServerConstructorParams {
-    expressControllers: IHTTPControllerDescriptor<RequestHandler>[];
+    nonAuthenticatedControllers: IHTTPControllerDescriptor<RequestHandler>[];
+    authenticatedControllers: IHTTPControllerDescriptor<RequestHandler>[];
+
 }
 
 export class ExpressServer extends AbstractServer {
@@ -23,7 +25,7 @@ export class ExpressServer extends AbstractServer {
     _logger: any;
     _io: WSServer;
 
-    constructor({ db, logger, expressControllers }: IExpressConstructorParams) {
+    constructor({ db, logger, nonAuthenticatedControllers, authenticatedControllers}: IExpressConstructorParams) {
         
         super({ db, logger });
         this._app = express();
@@ -50,7 +52,14 @@ export class ExpressServer extends AbstractServer {
         this._app.use(helmet());
         this._app.disable('x-powered-by');
 
-        expressControllers.forEach((descriptor) => {
+        nonAuthenticatedControllers.forEach((descriptor) => {
+            this._app[descriptor.method](
+                descriptor.path,
+                descriptor.controller
+            );
+        });
+
+        authenticatedControllers.forEach((descriptor) => {
             this._app[descriptor.method](
                 descriptor.path,
                 descriptor.controller

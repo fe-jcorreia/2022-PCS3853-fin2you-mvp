@@ -1,6 +1,7 @@
 import {
   IDatabase,
-  IBaseCollection
+  IBaseCollection, 
+  // ITest
 } from "@adapters/repositories";
 import { createConnection, Connection, Repository } from "typeorm";
 
@@ -43,16 +44,16 @@ class TypeORMCollectionAdapter<P> implements IBaseCollection<P> {
     if(!id) {
       throw Error("Null id was passed");
     }
-    const response = await this.repository.findOneOrFail(id);
+    const response = await this.repository.findOne(id);
     return response;
   }
 
-  async getOneByField(field: string, value: string) {
+  async getOneByOwnField(field: string, value: string) {
     const response = await this.repository.findOne({ [field]: value });
     return response;
   }
 
-  getManyByIds(ids: string[]) {
+  async getManyByIds(ids: string[]) {
     return this.repository.findByIds(ids) // does this fail if one id is not found?
   }
 
@@ -60,26 +61,24 @@ class TypeORMCollectionAdapter<P> implements IBaseCollection<P> {
     return this.repository.find();
   }
 
-  async editOne(id: string, entity: P) {
-    const result = await this.repository.update(id, entity);
-    return (result.generatedMaps as P[])[0];
-  }
-
   async insertOne(data: P) {
     const result = await this.repository.save(data);
-    return result;
+    return result ? true : false;
   }
 
-  async updateOne(id: string, data: P) {
-    console.log({data})
+  async updateOne(id: string, data) {
     const result = await this.repository.update(id, data)
     return (result.generatedMaps as P[])[0];
   }
 
-  getManyByField(field: string, value: string) {
-    return this.repository.find({ [field]: value })
+  getByFK(foreignTable: string, conditions: { foreignKey: string, value: string }[]) {
+    const query = `SELECT * FROM ${foreignTable} where ${conditions.map((condition,i, conditions) => i < conditions.length-1 ? `${condition.foreignKey} = \'${condition.value}\' AND` : `${condition.foreignKey} = \'${condition.value}\'`).join(" ")}`;
+    // console.log({query})
+    return this.repository.query(query)
   }
-  insertMany(entities: P[]) {
-    return this.repository.save(entities);
+
+  async insertMany(entities: P[]) {
+    const result = await this.repository.save(entities);
+    return result ? true : false;
   }
 }

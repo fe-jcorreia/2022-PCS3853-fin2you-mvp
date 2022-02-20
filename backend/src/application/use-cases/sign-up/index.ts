@@ -8,7 +8,6 @@ import {
 import { User } from '@domain';
 import { CategoryDTO } from '@/application/ports/repository/category';
 
-
 export type InputParams = {
     email: string;
     cpf: string;
@@ -38,6 +37,7 @@ export const SignUpUseCaseFactory: ISignUpUseCaseFactory = ({
             const categoryDTOs = user.categories.map(category => {
                 const dto = new CategoryDTO();
                 dto.name = category.name
+                dto.total = 0;
                 return dto;
             });
 
@@ -47,7 +47,8 @@ export const SignUpUseCaseFactory: ISignUpUseCaseFactory = ({
                 name: user.getName(),
                 hashedPassword: await encryptionService.encrypt(user.getPassword()),
                 extracts: [],
-                categories: categoryDTOs
+                categories: categoryDTOs,
+                lastExtractFetch: 0
             };
             console.log(userDTO)
             await userRepository.insertUser(userDTO)

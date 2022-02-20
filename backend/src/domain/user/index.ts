@@ -33,17 +33,17 @@ export class User {
         this.extracts = args.extracts || [];
     }
 
-    validateEmail(email: string | undefined) {
+    private validateEmail(email: string | undefined) {
         if(email === 'zoado' || !email) throw new Error();
         return true;
     }
 
-    validateCPF(cpf: string | undefined) {
+    private validateCPF(cpf: string | undefined) {
         if(cpf === 'zoado' || !cpf) throw new Error();
         return true;
     }
     
-    validatePassword(password: string | undefined) {
+    private validatePassword(password: string | undefined) {
         if(!password) {
             throw new Error("Please provide a password");
         } else if (password.length < 8) {

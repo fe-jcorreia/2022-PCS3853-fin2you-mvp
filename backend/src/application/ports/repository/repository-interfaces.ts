@@ -1,21 +1,26 @@
 import {
     UserDTO,
-    ExtractDTO
+    ExtractDTO,
+    CategoryDTO
 } from '.';
 
 export interface IUserRepository {
     getUserById: (id: string) => Promise<UserDTO | undefined>;
     getUserByEmail: (email: string) => Promise<UserDTO | undefined>;
-    insertUser: (user: UserDTO) => Promise<UserDTO | undefined>;
+    insertUser: (user: UserDTO) => Promise<boolean>;
+    updateUser: (id: string, user: UserDTO) => Promise<boolean>;
 }
 
 export interface IExtractRepository {
-    getAllFromUser: (userId: string) => Promise<ExtractDTO[] | undefined>;
-    addExtracts: (extracts: ExtractDTO[]) => Promise<(ExtractDTO | undefined)[]>
-    categorizeExtract: (extractID: string, extract: ExtractDTO) => Promise<ExtractDTO|undefined>;
+    getAllFromUser: (userId: string) => Promise<ExtractDTO[]>;
+    getById: (extractId: string) => Promise<ExtractDTO|undefined>;
+    addExtracts: (extracts: ExtractDTO[]) => Promise<boolean>
+    categorizeExtract: (extractID: string, categoryId: string) => Promise<boolean>;
+    getByCategoryId: (categoryId: string) => Promise<ExtractDTO[]>
 }
 
 export interface ICategoryRepository {
-    getAllFromUser: (userId: string) => Promise<ExtractDTO[]>;
-    updateCategorySum: (categoryId: string) => Promise<boolean>;
+    getAllFromUser: (userId: string) => Promise<CategoryDTO[]>;
+    getByNameFromUser: (userId: string, category: string) => Promise<CategoryDTO[]>;
+    updateCategory: (categoryId: string, category: Partial<CategoryDTO>) => Promise<boolean>;
 }

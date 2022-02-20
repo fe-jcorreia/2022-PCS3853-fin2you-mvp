@@ -10,7 +10,7 @@ export type IHTTPControllerPathDescriptor = {
     isOptional?: boolean;
 }[];
 
-export type IHTTPMethod = 'post' | 'get' | 'put' | 'delete';
+export type IHTTPMethod = 'post' | 'get' | 'put' | 'delete' | 'patch';
 export interface IHTTPControllerDescriptor<
     Controller,
     // Path = IHTTPControllerPathDescriptor

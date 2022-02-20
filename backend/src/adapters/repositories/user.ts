@@ -1,5 +1,5 @@
 import { IUserRepository, UserDTO } from '@application/ports';
-import { IBaseCollection, IDatabase } from '../ibase-repository';
+import { IBaseCollection, IDatabase } from './ibase-repository';
 
 export class UserRepository implements IUserRepository {
     private readonly collection: IBaseCollection<UserDTO>;
@@ -12,10 +12,19 @@ export class UserRepository implements IUserRepository {
         return this.collection.getOneById(userId);
     }
     getUserByEmail(email: string) {
-        return this.collection.getOneByField('email', email);
+        return this.collection.getOneByOwnField('email', email);
     }
     insertUser(user: UserDTO) {
         return this.collection.insertOne(user);
+    }
+    async updateUser(id: string, user: UserDTO) {
+        try{
+            await this.collection.updateOne(id, user);
+        } catch (e){
+            console.log({e})
+            return false;
+        }
+        return true;
     }
 }
 

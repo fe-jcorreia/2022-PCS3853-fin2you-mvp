@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, RelationId, ManyToOne, OneToMany, JoinColumn } from "typeorm";
 import { UserDTO } from "./user";
 import { ExtractDTO } from "./extract";
 
@@ -8,9 +8,15 @@ export class CategoryDTO {
     id?: string;
     @Column()
     name: string;
-    @ManyToOne(() => UserDTO, user => user.categories)
+
+    @ManyToOne(() => UserDTO)
     user: UserDTO
-    @OneToMany(() => ExtractDTO, extract => extract.category)
-    extracts: ExtractDTO
+    @RelationId((user: UserDTO) => user.extracts)
+    userId: string;
+    
+    @Column()
+    total: number;
+    @OneToMany(() => ExtractDTO, extract => extract.category, {eager:true})
+    extracts: ExtractDTO[]
 };
 

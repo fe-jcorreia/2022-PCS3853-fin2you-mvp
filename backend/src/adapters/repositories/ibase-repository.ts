@@ -1,11 +1,12 @@
 export interface IBaseCollection<P> {
-    getOneById: (id: string) => Promise<P | undefined>;
-    getOneByField: (field: string, value: string) => Promise<P | undefined>;
-    getAll: () => Promise<(P|undefined)[]>;
-    insertOne: (entity: P) => Promise<P|undefined>;
-    updateOne: (id: string, entity: P) => Promise<P|undefined>;
-    getManyByField: (field: string, value: string) => Promise<(P | undefined)[]>;
-    insertMany: (entities: P[]) => Promise<(P | undefined)[]>;
+    getOneById: (id: string) => Promise<P|undefined>;
+    getOneByOwnField: (field: string, value: string) => Promise<P | undefined>;
+    getManyByIds: (ids: string[]) => Promise<P[]>;
+    getAll: () => Promise<P[]>;
+    getByFK?: (foreignTable: string, conditions: {foreignKey: string, value: string}[]) => Promise<P[]>;
+    insertOne: (entity: P) => Promise<boolean>;
+    updateOne: (id: string, entity: Partial<P>) => Promise<P>;
+    insertMany: (entities: P[]) => Promise<boolean>;
 }
 
 export interface IDatabase {

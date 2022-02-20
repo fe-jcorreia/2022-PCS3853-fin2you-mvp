@@ -9,7 +9,7 @@ interface CategoryConstructorParams {
 }
 
 export class Category {
-    public id: string;
+    public id?: string;
     public name: string;
     public extracts: Extract[];
     public total: number;
@@ -20,6 +20,17 @@ export class Category {
         if(args.name) this.name = args.name;
         this.extracts = args.extracts || [];
         this.total = args.total || 0;
+    }
+
+    addNewExtract(extract: Extract) {
+        // console.log({extract})
+        // console.log(this.extracts)
+        // not very idempotent :(
+        if(this.extracts.findIndex(e => e.id === extract.id) !== -1) {
+            throw new Error("This extract already belongs to this category");
+        }
+        // this.extracts.push(extract);
+        this.total += extract.amount;
     }
 }
 
