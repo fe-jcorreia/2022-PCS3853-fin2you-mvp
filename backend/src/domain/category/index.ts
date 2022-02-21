@@ -31,6 +31,7 @@ export class Category {
         }
         // this.extracts.push(extract);
         this.total += extract.amount;
+        this.extracts.push(extract);
     }
 }
 

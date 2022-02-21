@@ -3,7 +3,7 @@ import {
   IBaseCollection, 
   // ITest
 } from "@adapters/repositories";
-import { createConnection, Connection, Repository } from "typeorm";
+import { createConnection, Connection, Repository, DeepPartial } from "typeorm";
 
 export class TypeORMDatabase implements IDatabase {
   connection: Connection;
@@ -61,7 +61,7 @@ class TypeORMCollectionAdapter<P> implements IBaseCollection<P> {
     return this.repository.find();
   }
 
-  async insertOne(data: P) {
+  async insertOne(data: DeepPartial<P>) {
     const result = await this.repository.save(data);
     return result ? true : false;
   }

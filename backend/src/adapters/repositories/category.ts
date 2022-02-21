@@ -17,8 +17,8 @@ export class CategoryRepository implements ICategoryRepository {
             {foreignKey:"name",value:categoryName}
         ]);
     }
-    async updateCategory(categoryId: string, category: Partial<CategoryDTO>) {
-        const result = await this.collection.updateOne(categoryId, category);
+    async updateCategory(category: Partial<CategoryDTO>) {
+        const result = await this.collection.insertOne(category);
         if(result) return true;
         return false;
     }

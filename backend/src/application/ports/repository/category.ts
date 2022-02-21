@@ -11,12 +11,12 @@ export class CategoryDTO {
 
     @ManyToOne(() => UserDTO)
     user: UserDTO
-    @RelationId((user: UserDTO) => user.extracts)
+    @RelationId("user")
     userId: string;
     
     @Column()
     total: number;
-    @OneToMany(() => ExtractDTO, extract => extract.category, {eager:true})
+    @OneToMany(() => ExtractDTO, extract => extract.category, {eager:true, cascade: true})
     extracts: ExtractDTO[]
 };
 

@@ -50,7 +50,7 @@ export const SignUpUseCaseFactory: ISignUpUseCaseFactory = ({
                 categories: categoryDTOs,
                 lastExtractFetch: 0
             };
-            console.log(userDTO)
+            // console.log(userDTO)
             await userRepository.insertUser(userDTO)
         },
     };

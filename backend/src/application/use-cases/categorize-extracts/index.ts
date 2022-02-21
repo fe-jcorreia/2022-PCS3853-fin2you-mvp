@@ -42,7 +42,7 @@ export const CategorizeExtractsUseCaseFactory: ICategorizeExtractsUseCaseFactory
             // not very idempotent :(
             if(newExtractDTO.category) throw new Error('That extract already has a category');
 
-            console.log({categoryDTO, categoryExtractDTOs})
+            console.log({categoryDTO, categoryExtractDTOs, newExtractDTO})
             // if I don't pass in user info, when I add this to db, will the unadded info be gone?
             // not using the typeorm functions here.
             const category = new Category({
@@ -56,12 +56,10 @@ export const CategorizeExtractsUseCaseFactory: ICategorizeExtractsUseCaseFactory
                 amount: newExtractDTO.amount
             }));
 
-            categoryDTO.total = category.total;
-            // categoryDTO.extracts.push(newExtractDTO);
-            newExtractDTO.category = categoryDTO;
-
-            await categoriesRepository.updateCategory(categoryDTO.id!, {
-                total: category.total
+            await categoriesRepository.updateCategory({
+                id: categoryDTO.id,
+                total: category.total,
+                extracts: [...categoryExtractDTOs, newExtractDTO]
             });
             // await extractsRepository.categorizeExtract(newExtractDTO.id!, newExtractDTO);
             // const extractDTO = await extractsRepository.

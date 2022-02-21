@@ -22,5 +22,5 @@ export interface IExtractRepository {
 export interface ICategoryRepository {
     getAllFromUser: (userId: string) => Promise<CategoryDTO[]>;
     getByNameFromUser: (userId: string, category: string) => Promise<CategoryDTO[]>;
-    updateCategory: (categoryId: string, category: Partial<CategoryDTO>) => Promise<boolean>;
+    updateCategory: (category: Partial<CategoryDTO>) => Promise<boolean>;
 }

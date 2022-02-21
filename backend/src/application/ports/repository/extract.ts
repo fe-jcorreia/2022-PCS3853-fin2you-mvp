@@ -17,12 +17,12 @@ export class ExtractDTO {
 
     @ManyToOne(() => UserDTO)
     user: UserDTO
-    @RelationId((user: UserDTO) => user.extracts)
+    @RelationId("user")
     userId: string;
     
     @ManyToOne(() => CategoryDTO, /*, {eager: true}*/)
     category: CategoryDTO
-    @RelationId((category: CategoryDTO) => category.extracts)
+    @RelationId("category")
     categoryId: string;
 };
 
