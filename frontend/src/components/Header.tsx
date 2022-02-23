@@ -1,4 +1,6 @@
 import {
+  Avatar,
+  Box,
   Flex,
   Heading,
   HStack,
@@ -7,9 +9,12 @@ import {
   Link,
   Text,
 } from "@chakra-ui/react";
-import { FiUser, FiArrowRightCircle } from "react-icons/fi";
+import { useContext } from "react";
+import { FiUser, FiLogIn, FiLogOut, FiTrello } from "react-icons/fi";
+import { AuthContext } from "../contexts/AuthContext";
 
 export function Header() {
+  const { isAuthenticated, user, signOut } = useContext(AuthContext);
   return (
     <Flex bg="white" boxShadow="sm" pos="sticky" top="0" as="header" zIndex="3">
       <Flex
@@ -34,16 +39,52 @@ export function Header() {
           </HStack>
         </Link>
 
-        <HStack spacing='2rem'>
-          <Link href="/signup" display="flex" ml="2rem" align="center">
-            <Icon as={FiArrowRightCircle} mr="0.5rem" fontSize="1.5rem" />
-            Sign Up
-          </Link>
+        <HStack spacing="2rem">
+          {isAuthenticated ? (
+            <>
+              <Link href="/dashboard" display="flex" ml="1rem" align="center">
+                <Icon as={FiTrello} mr="0.5rem" fontSize="1.5rem" />
+                Dashboard
+              </Link>
 
-          <Link href="/login" display="flex" ml="2rem" align="center">
-            <Icon as={FiUser} mr="0.5rem" fontSize="1.5rem" />
-            Login
-          </Link>
+              <Link
+                href="/"
+                display="flex"
+                ml="1rem"
+                align="center"
+                onClick={signOut}
+              >
+                <Icon as={FiLogOut} mr="0.5rem" fontSize="1.5rem" />
+                Logout
+              </Link>
+
+              <Box
+                textAlign="right"
+                pl="1rem"
+                borderLeft="1px"
+                borderColor="gray.300"
+              >
+                <Text>{user.name}</Text>
+                <Text color="gray.500" fontSize="small">
+                  {user.email}
+                </Text>
+              </Box>
+
+              <Avatar size="md" name={user.name} />
+            </>
+          ) : (
+            <>
+              <Link href="/signup" display="flex" ml="2rem" align="center">
+                <Icon as={FiLogIn} mr="0.5rem" fontSize="1.5rem" />
+                Sign Up
+              </Link>
+
+              <Link href="/login" display="flex" ml="2rem" align="center">
+                <Icon as={FiUser} mr="0.5rem" fontSize="1.5rem" />
+                Login
+              </Link>
+            </>
+          )}
         </HStack>
       </Flex>
     </Flex>
