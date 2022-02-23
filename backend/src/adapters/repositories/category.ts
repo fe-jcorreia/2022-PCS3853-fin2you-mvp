@@ -23,6 +23,10 @@ export class CategoryRepository implements ICategoryRepository {
         return false;
     }
 
+    getById(categoryId: string) {
+        return this.collection.getOneById(categoryId);
+    }
+
 }
 
 export default CategoryRepository;

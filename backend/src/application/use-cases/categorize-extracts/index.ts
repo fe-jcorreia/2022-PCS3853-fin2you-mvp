@@ -43,10 +43,10 @@ export const CategorizeExtractsUseCaseFactory: ICategorizeExtractsUseCaseFactory
             console.log(newExtractDTO.categoryId);
             if(newExtractDTO.categoryId && newExtractDTO.categoryId !== categoryDTO.id) {
                 const oldCategoryDTO = await categoriesRepository.getById(newExtractDTO.categoryId);
-                const oldCategoryExtractDTOs = await extractsRepository.getByCategoryId(oldCategoryDTO.id!);
+                const oldCategoryExtractDTOs = await extractsRepository.getByCategoryId(oldCategoryDTO!.id!);
                 
                 const oldCategory = new Category({
-                    total: oldCategoryDTO.total,
+                    total: oldCategoryDTO!.total,
                     extracts: oldCategoryExtractDTOs.map(dto => new Extract({id: dto.id}))
                 });
 

@@ -10,5 +10,5 @@
 In this case, there is no need to use Docker at all. Just do `npm run dev`.
 ### Deploying
 - `docker build -t iagosrm/fin2you .` to build image
-- `docker run --name fin2you -p 3006:3006 iagosrm/fin2you` to run this service.
+- `docker run --name fin2you -p 3006:3006 -e CORS_ALLOW=http://localhost:3001 iagosrm/fin2you` to run this service.
 - `docker push iagosrm/fin2you` to update image in DockerHub
