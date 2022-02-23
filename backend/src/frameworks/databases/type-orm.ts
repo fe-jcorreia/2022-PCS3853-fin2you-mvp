@@ -66,7 +66,7 @@ class TypeORMCollectionAdapter<P> implements IBaseCollection<P> {
     return result ? true : false;
   }
 
-  async updateOne(_: string, data) {
+  async updateOne(data: any) {
     const result = await this.repository.save(data);
     return result ? true : false;
   }

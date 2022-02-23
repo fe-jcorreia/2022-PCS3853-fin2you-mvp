@@ -32,19 +32,30 @@ export const CategorizeExtractsUseCaseFactory: ICategorizeExtractsUseCaseFactory
     categoriesRepository
 }) => {
     return {
-        // will have to get the extracts of this category in a new call, because eager loading doesn't work with query.
         execute: async ({ userId, category: categoryName, extractId }) => {
             const categoryDTO = (await categoriesRepository.getByNameFromUser(userId, categoryName))[0];
             if(!categoryDTO) throw new Error(`Could not find a category named ${categoryName} associated with user ${userId}`);
+            
             const newExtractDTO = await extractsRepository.getById(extractId);
-            const categoryExtractDTOs = await extractsRepository.getByCategoryId(categoryDTO.id!);
             if(!newExtractDTO) throw new Error(`Could not find extract with id ${extractId}`);
-            // not very idempotent :(
-            if(newExtractDTO.category) throw new Error('That extract already has a category');
+            
+            const categoryExtractDTOs = await extractsRepository.getByCategoryId(categoryDTO.id!);
+            console.log(newExtractDTO.categoryId);
+            if(newExtractDTO.categoryId && newExtractDTO.categoryId !== categoryDTO.id) {
+                const oldCategoryDTO = await categoriesRepository.getById(newExtractDTO.categoryId);
+                const oldCategoryExtractDTOs = await extractsRepository.getByCategoryId(oldCategoryDTO.id!);
+                
+                const oldCategory = new Category({
+                    total: oldCategoryDTO.total,
+                    extracts: oldCategoryExtractDTOs.map(dto => new Extract({id: dto.id}))
+                });
 
-            console.log({categoryDTO, categoryExtractDTOs, newExtractDTO})
-            // if I don't pass in user info, when I add this to db, will the unadded info be gone?
-            // not using the typeorm functions here.
+                oldCategory.removeExtract(new Extract({
+                    id: newExtractDTO.id,
+                    amount: newExtractDTO.amount
+                }))
+            }
+
             const category = new Category({
                 name: categoryDTO.name,
                 total: categoryDTO.total,
@@ -61,8 +72,7 @@ export const CategorizeExtractsUseCaseFactory: ICategorizeExtractsUseCaseFactory
                 total: category.total,
                 extracts: [...categoryExtractDTOs, newExtractDTO]
             });
-            // await extractsRepository.categorizeExtract(newExtractDTO.id!, newExtractDTO);
-            // const extractDTO = await extractsRepository.
+
             return { success: true };
         },
     };

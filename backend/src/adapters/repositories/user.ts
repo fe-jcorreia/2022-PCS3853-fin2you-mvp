@@ -17,14 +17,10 @@ export class UserRepository implements IUserRepository {
     insertUser(user: UserDTO) {
         return this.collection.insertOne(user);
     }
-    async updateUser(id: string, user: UserDTO) {
-        try{
-            await this.collection.updateOne(id, user);
-        } catch (e){
-            console.log({e})
-            return false;
-        }
-        return true;
+    async updateUser(user: UserDTO) {
+        const result = await this.collection.updateOne(user);
+        if(result) return true;
+        return false;
     }
 }
 

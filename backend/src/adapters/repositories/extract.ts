@@ -16,13 +16,13 @@ export class ExtractRepository implements IExtractRepository {
             {foreignKey: "userId", value: userId}
         ]);
     }
-    async categorizeExtract(extractId: string, categoryId: string) {
-        const result = await this.collection.updateOne(extractId, {
-            categoryId
-        });
-        if(result) return true;
-        return false;
-    }
+    // async categorizeExtract(extractId: string, categoryId: string) {
+    //     const result = await this.collection.updateOne(extractId, {
+    //         categoryId
+    //     });
+    //     if(result) return true;
+    //     return false;
+    // }
     addExtracts(extracts: ExtractDTO[]) {
         return this.collection.insertMany(extracts);
     }

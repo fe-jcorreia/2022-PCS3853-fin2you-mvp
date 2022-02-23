@@ -18,7 +18,7 @@ export class CategoryRepository implements ICategoryRepository {
         ]);
     }
     async updateCategory(category: Partial<CategoryDTO>) {
-        const result = await this.collection.insertOne(category);
+        const result = await this.collection.updateOne(category);
         if(result) return true;
         return false;
     }

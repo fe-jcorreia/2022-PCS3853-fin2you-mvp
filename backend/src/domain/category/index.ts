@@ -23,15 +23,19 @@ export class Category {
     }
 
     addNewExtract(extract: Extract) {
-        // console.log({extract})
-        // console.log(this.extracts)
         // not very idempotent :(
         if(this.extracts.findIndex(e => e.id === extract.id) !== -1) {
             throw new Error("This extract already belongs to this category");
         }
-        // this.extracts.push(extract);
         this.total += extract.amount;
         this.extracts.push(extract);
+    }
+
+    removeExtract(extract: Extract) {
+        const oldExtractIndex = this.extracts.findIndex(e => e.id === extract.id);
+        if(oldExtractIndex === -1) throw Error("Extract not found");
+        this.extracts.splice(oldExtractIndex,1);
+        this.total -= extract.amount;
     }
 }
 

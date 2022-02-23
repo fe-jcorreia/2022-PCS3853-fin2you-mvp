@@ -15,12 +15,12 @@ export interface IExtractRepository {
     getAllFromUser: (userId: string) => Promise<ExtractDTO[]>;
     getById: (extractId: string) => Promise<ExtractDTO|undefined>;
     addExtracts: (extracts: ExtractDTO[]) => Promise<boolean>
-    categorizeExtract: (extractID: string, categoryId: string) => Promise<boolean>;
     getByCategoryId: (categoryId: string) => Promise<ExtractDTO[]>
 }
 
 export interface ICategoryRepository {
     getAllFromUser: (userId: string) => Promise<CategoryDTO[]>;
     getByNameFromUser: (userId: string, category: string) => Promise<CategoryDTO[]>;
+    getById: (categoryId: string) => Promise<CategoryDTO>;
     updateCategory: (category: Partial<CategoryDTO>) => Promise<boolean>;
 }
