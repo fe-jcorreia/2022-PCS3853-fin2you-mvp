@@ -35,4 +35,10 @@ Passo a Passo
 
 - Supondo que não tenha havido erro, agora temos o consetimento de captação dos dados
 
+- Consultar a API de Dados Cadastrais com GET /customers/v1/personal/identifications
+- Parte obrigatória a ser mandada:
+	Header:
+        	"Authorization ": CONSENTID DA TRANSAÇÃO ANTERIOR
+- Receber
+
 - Em seguida, fazer a consulta da API de CONTAS
