@@ -5,7 +5,7 @@ export interface IBaseCollection<P> {
     getAll: () => Promise<P[]>;
     getByFK?: (foreignTable: string, conditions: {foreignKey: string, value: string}[]) => Promise<P[]>;
     insertOne: (entity: any) => Promise<boolean>;
-    updateOne: (id: string, entity: Partial<P>) => Promise<P>;
+    updateOne: (id: string, entity: Partial<P>) => Promise<boolean>;
     insertMany: (entities: P[]) => Promise<boolean>;
 }
 

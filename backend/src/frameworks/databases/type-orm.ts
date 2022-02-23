@@ -66,9 +66,9 @@ class TypeORMCollectionAdapter<P> implements IBaseCollection<P> {
     return result ? true : false;
   }
 
-  async updateOne(id: string, data) {
-    const result = await this.repository.update(id, data)
-    return (result.generatedMaps as P[])[0];
+  async updateOne(_: string, data) {
+    const result = await this.repository.save(data);
+    return result ? true : false;
   }
 
   getByFK(foreignTable: string, conditions: { foreignKey: string, value: string }[]) {

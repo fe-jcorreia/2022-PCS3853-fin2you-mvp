@@ -38,13 +38,12 @@ export const GetExtractsUseCaseFactory: IGetExtractsUseCaseFactory = ({
 
             const oldExtractDTOs = await extractsRepository.getAllFromUser(userId);
             const newExtractDTOs = (await openBankingService.getExtracts(userDTO!.cpf, userDTO!.lastExtractFetch)).map(extract => ({...extract, user: userDTO}));
-            // console.log({oldExtractDTOs, newExtractDTOs})
-            userDTO.lastExtractFetch = Date.now();
-            await userRepository.updateUser(userDTO.id!,userDTO);
-
-            await extractsRepository.addExtracts(newExtractDTOs)
             
             const extracts = [...oldExtractDTOs, ...newExtractDTOs]
+            userDTO.lastExtractFetch = Date.now();
+            userDTO.extracts = extracts;
+            await userRepository.updateUser(userDTO);
+
             return {extracts: extracts.map(extract => ({...extract, user: undefined}))};
         },
     };
