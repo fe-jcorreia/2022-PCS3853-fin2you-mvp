@@ -1,0 +1,40 @@
+{
+  "data": [
+    {
+      "description": "Faculdade",
+      "amount": 1850,
+      "type": "debit",
+      "category": "Estudos"
+    },
+    {
+      "description": "Salário mensal",
+      "amount": 4500,
+      "type": "credit",
+      "category": "Recebíveis"
+    },
+    {
+      "description": "Compras de mercado",
+      "amount": 200,
+      "type": "debit",
+      "category": "Alimentação"
+    },
+    {
+      "description": "Skin no lol",
+      "amount": 100,
+      "type": "debit",
+      "category": "Lazer"
+    },
+    {
+      "description": "Aluguel",
+      "amount": 1200,
+      "type": "debit",
+      "category": "Moradia"
+    },
+    {
+      "description": "Ave rara contrabandeada",
+      "amount": 1500,
+      "type": "debit",
+      "category": "Outros"
+    }
+  ]
+}

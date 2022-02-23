@@ -12,6 +12,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { NextPage } from "next";
+import { api } from "../services/api";
 
 type CreateAccountFormData = {
   name: string;
@@ -38,19 +39,17 @@ const Signup: NextPage = () => {
   });
   const errors = formState.errors;
 
-  const handleCreateAccount: SubmitHandler<CreateAccountFormData> = (
+  const handleCreateAccount: SubmitHandler<CreateAccountFormData> = async (
     values
   ) => {
-    console.log(values);
-
-    toast({
-      title: "Sucesso",
-      description: "Sua conta foi criada",
-      status: "success",
-      position: "top-right",
-      duration: 2000,
-      isClosable: true,
+    const response = await api.post("signup", {
+      name: "Fernando",
+      email: "email@gmail.com",
+      password: "123456789",
+      cpf: "12345678910",
     });
+    console.log(response.data);
+
     reset();
   };
 

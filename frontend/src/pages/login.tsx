@@ -5,7 +5,6 @@ import {
   Image,
   Link,
   Text,
-  useToast,
   VStack,
 } from "@chakra-ui/react";
 import { Input } from "../components/Input";
@@ -14,6 +13,9 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { NextPage } from "next";
+import { useContext } from "react";
+import { AuthContext } from "../contexts/AuthContext";
+import { api } from "../services/api";
 
 type LoginAccountFormData = {
   email: string;
@@ -30,23 +32,23 @@ const signInForSchema = yup.object().shape({
 });
 
 const Login: NextPage = () => {
-  const toast = useToast();
+  const { signIn } = useContext(AuthContext);
   const { register, handleSubmit, reset, formState } = useForm({
     resolver: yupResolver(signInForSchema),
   });
   const errors = formState.errors;
 
-  const handleLogin: SubmitHandler<LoginAccountFormData> = (values) => {
-    console.log(values);
-
-    toast({
-      title: "Sucesso",
-      description: "Você entrou na sua conta",
-      status: "success",
-      position: "top-right",
-      duration: 2000,
-      isClosable: true,
+  const handleLogin: SubmitHandler<LoginAccountFormData> = async ({
+    email,
+    password,
+  }) => {
+    //await signIn({ email, password });
+    const response = await api.post("login", {
+      email: "email@gmail.com",
+      password: "123456789",
     });
+    console.log(response.data);
+
     reset();
   };
 
