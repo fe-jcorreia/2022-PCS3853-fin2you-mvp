@@ -34,7 +34,7 @@ export class Category {
     removeExtract(extract: Extract) {
         const oldExtractIndex = this.extracts.findIndex(e => e.id === extract.id);
         if(oldExtractIndex === -1) throw Error("Extract not found");
-        this.extracts.splice(oldExtractIndex,1);
+        // this.extracts.splice(oldExtractIndex,1);
         this.total -= extract.amount;
     }
 }

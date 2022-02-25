@@ -40,7 +40,9 @@ export const CategorizeExtractsUseCaseFactory: ICategorizeExtractsUseCaseFactory
             if(!newExtractDTO) throw new Error(`Could not find extract with id ${extractId}`);
             
             const categoryExtractDTOs = await extractsRepository.getByCategoryId(categoryDTO.id!);
-            console.log(newExtractDTO.categoryId);
+            // console.log(newExtractDTO.categoryId);
+            // console.log('categoryExtractDTOs',[...categoryExtractDTOs]);
+            // if extract has a different category, old category has to be updated first
             if(newExtractDTO.categoryId && newExtractDTO.categoryId !== categoryDTO.id) {
                 const oldCategoryDTO = await categoriesRepository.getById(newExtractDTO.categoryId);
                 const oldCategoryExtractDTOs = await extractsRepository.getByCategoryId(oldCategoryDTO!.id!);
@@ -53,7 +55,15 @@ export const CategorizeExtractsUseCaseFactory: ICategorizeExtractsUseCaseFactory
                 oldCategory.removeExtract(new Extract({
                     id: newExtractDTO.id,
                     amount: newExtractDTO.amount
-                }))
+                }));
+
+                // console.log({oldCategoryExtractDTOs});
+
+                await categoriesRepository.updateCategory({
+                    id: oldCategoryDTO!.id,
+                    total: oldCategory.total,
+                    extracts: oldCategoryExtractDTOs.filter(e => e.id !== newExtractDTO.id)
+                });
             }
 
             const category = new Category({
