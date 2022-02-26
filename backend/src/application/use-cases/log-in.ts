@@ -4,7 +4,7 @@ import {
     IUserRepository,
     IEncryptionService,
     ITokenService,
-} from '../../ports';
+} from '../ports';
 
 export type LoginInputParams = {
     email: string;

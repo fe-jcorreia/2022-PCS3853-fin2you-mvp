@@ -4,7 +4,7 @@ import {
     IUserRepository,
     UserDTO,
     IEncryptionService
-} from '../../ports';
+} from '../ports';
 import { User } from '@domain';
 import { CategoryDTO } from '@/application/ports/repository/category';
 

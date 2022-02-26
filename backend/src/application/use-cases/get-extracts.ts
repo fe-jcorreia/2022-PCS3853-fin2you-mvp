@@ -5,7 +5,7 @@ import {
     ExtractDTO,
     IOpenBankingService,
     IUserRepository
-} from '../../ports';
+} from '../ports';
 
 export type GetExtractsInputParams = {
     userId: string;

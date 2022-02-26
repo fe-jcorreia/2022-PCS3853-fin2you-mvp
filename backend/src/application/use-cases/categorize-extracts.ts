@@ -5,7 +5,7 @@ import {
     IExtractRepository,
     ICategoryRepository,
     ExtractDTO,
-} from '../../ports';
+} from '../ports';
 
 export type CategorizeExtractsInputParams = {
     extractId: string;
