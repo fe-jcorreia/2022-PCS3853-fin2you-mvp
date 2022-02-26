@@ -1,5 +1,5 @@
 import { IGetExtractsUseCase } from '@application/use-cases';
-import { IHTTPController, IHTTPControllerDescriptor } from '../ports';
+import { IHTTPController, IHTTPControllerDescriptor } from '../../ports/REST-controllers';
 
 export const GetExtractsControllerFactory = ({
     getExtractsUseCase,
@@ -22,6 +22,7 @@ export const GetExtractsControllerFactory = ({
     };
 
     return {
+        middleware: "auth",
         controller: fn,
         method: 'get',
         path: '/extracts'

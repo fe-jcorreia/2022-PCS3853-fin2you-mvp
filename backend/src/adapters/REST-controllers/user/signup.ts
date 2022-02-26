@@ -1,5 +1,5 @@
 import { ISignUpUseCase } from '@application/use-cases';
-import { IHTTPController, IHTTPControllerDescriptor } from '../ports';
+import { IHTTPController, IHTTPControllerDescriptor } from '../../ports/REST-controllers';
 
 export const SignUpControllerFactory = ({
     signUpUseCase,

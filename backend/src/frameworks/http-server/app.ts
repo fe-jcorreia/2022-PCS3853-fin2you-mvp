@@ -11,12 +11,11 @@ import {
     Server as AbstractServer,
     IHTTPServerConstructorParams,
 } from './server';
-import { IHTTPControllerDescriptor } from '@adapters/REST-controllers';
+import { IHTTPControllerDescriptor, IHTTPMiddleware } from '@adapters/REST-controllers';
 
 interface IExpressConstructorParams extends IHTTPServerConstructorParams {
-    nonAuthenticatedControllers: IHTTPControllerDescriptor<RequestHandler>[];
-    authenticatedControllers: IHTTPControllerDescriptor<RequestHandler>[];
-
+    controllers: IHTTPControllerDescriptor<RequestHandler>[];
+    middlewares: { [key: string]: IHTTPMiddleware }
 }
 
 export class ExpressServer extends AbstractServer {
@@ -25,7 +24,7 @@ export class ExpressServer extends AbstractServer {
     _logger: any;
     _io: WSServer;
 
-    constructor({ db, logger, nonAuthenticatedControllers, authenticatedControllers}: IExpressConstructorParams) {
+    constructor({ db, logger, controllers, middlewares }: IExpressConstructorParams) {
         
         super({ db, logger });
         this._app = express();
@@ -57,19 +56,27 @@ export class ExpressServer extends AbstractServer {
         this._app.use(helmet());
         this._app.disable('x-powered-by');
 
-        nonAuthenticatedControllers.forEach((descriptor) => {
-            this._app[descriptor.method](
-                descriptor.path,
-                descriptor.controller
-            );
+        controllers.forEach((descriptor) => {
+            if(descriptor.middleware) {
+                this._app.use(middlewares[descriptor.middleware]);
+                this._app[descriptor.method](
+                    descriptor.path,
+                    descriptor.controller
+                ); 
+            } else {
+                this._app[descriptor.method](
+                    descriptor.path,
+                    descriptor.controller
+                );
+            }
         });
 
-        authenticatedControllers.forEach((descriptor) => {
-            this._app[descriptor.method](
-                descriptor.path,
-                descriptor.controller
-            );
-        });
+        // authenticatedControllers.forEach((descriptor) => {
+        //     this._app[descriptor.method](
+        //         descriptor.path,
+        //         descriptor.controller
+        //     );
+        // });
 
         this._app.all('*', () => {
             throw new NotFoundError();

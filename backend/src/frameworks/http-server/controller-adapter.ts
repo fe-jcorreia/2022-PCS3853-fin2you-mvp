@@ -11,10 +11,12 @@ export class ExpressControllerAdapter implements IHTTPFrameworkAdapter {
             req: Request,
             res: Response,
         ) {
+            console.log(req)
             const { response, statusCode } = await fn(
                 req.params,
                 req.body,
-                req.query
+                req.query,
+                req.headers
             );
             res.status(statusCode).json(response);
         };

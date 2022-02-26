@@ -24,7 +24,7 @@
     "@types/function-bind": "^1.1.6",
     "@types/hapi": "^18.0.6",
     "@types/i18next-fs-backend": "^1.0.0",
-    "@types/jest": "^26.0.21",
+    "@types/jest": "^26.0.24",
     "@types/jsonwebtoken": "^8.5.8",
     "@types/node": "^14.18.9",
     "@types/node-polyglot": "^2.4.1",

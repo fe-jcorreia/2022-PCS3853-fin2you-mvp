@@ -12,7 +12,7 @@
     "skipLibCheck": true,
     "sourceMap": true,
     "outDir": "./dist",
-    "types": ["node"],
+    "types": ["node", "jest"],
     "moduleResolution": "node",
     "removeComments": true,
     "noImplicitAny": false,

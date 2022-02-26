@@ -82,16 +82,18 @@ import { BCryptEncryptionService, JWTTokenService, OpenBankingService } from '@f
     const server = new ExpressServer({
       db: database,
       logger: { info: console.log, error: console.error },
-      nonAuthenticatedControllers: [signUpController,loginController].map(controller => ({
+      controllers: [signUpController,loginController].map(controller => ({
+        middleware: controller.middleware,
         method: controller.method,
         controller: expressAdapter.adaptControllerFunction(controller.controller),
         path: controller.path
       })),
-      authenticatedControllers: [getExtractController,categorizeExtractController].map(controller => ({
-        method: controller.method,
-        controller: expressAdapter.adaptControllerFunction(controller.controller),
-        path: controller.path
-      })),
+      middlewares: {
+        auth: (req) => {
+          console.log(req.headers);
+          req.user = {id: 7};
+        }
+      }
     })
     await server.start();
 
