@@ -8,6 +8,7 @@ import { ILogger } from '@common/logger';
 import {
     IHTTPController,
     IHTTPControllerPathDescriptor,
+    IHTTPMiddleware,
 } from '@adapters/REST-controllers';
 
 export interface IHTTPServerConstructorParams {
@@ -71,5 +72,7 @@ export abstract class Server {
 
 export interface IHTTPFrameworkAdapter {
     adaptControllerFunction(fn: IHTTPController): (...args) => Promise<any>;
+    adaptMiddlewareControllerFunction(fn: IHTTPMiddleware): (...args) => Promise<void>;
     adaptPath(pathDescriptor: IHTTPControllerPathDescriptor): string;
+
 }

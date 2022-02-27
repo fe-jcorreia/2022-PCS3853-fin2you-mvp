@@ -34,6 +34,9 @@
       "@adapters/REST-controllers": [
         "adapters/REST-controllers/index.ts"
       ],
+      "@adapters/REST-middleware": [
+        "adapters/REST-middleware/index.ts"
+      ],
       "@application/use-cases": ["application/use-cases/index.ts"],
       "@application/ports": [
         "application/ports/index.ts"

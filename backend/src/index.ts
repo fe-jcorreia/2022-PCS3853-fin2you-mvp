@@ -22,8 +22,11 @@ import {
   SignUpControllerFactory, 
   LoginControllerFactory,
   CategorizeExtractsControllerFactory,
-  GetExtractsControllerFactory
+  GetExtractsControllerFactory,
 } from '@adapters/REST-controllers';
+import {
+  AuthenticationMiddlewareControllerFactory
+} from '@adapters/REST-middleware';
 import { ExpressControllerAdapter } from '@frameworks/http';
 import { BCryptEncryptionService, JWTTokenService, OpenBankingService } from '@frameworks/services';
 
@@ -76,23 +79,23 @@ import { BCryptEncryptionService, JWTTokenService, OpenBankingService } from '@f
     const categorizeExtractController = CategorizeExtractsControllerFactory({
       categorizeExtractUseCase
     });
+    const authMiddleware = AuthenticationMiddlewareControllerFactory({
+      tokenService
+    })
 
     // http server
     const expressAdapter = new ExpressControllerAdapter();
     const server = new ExpressServer({
       db: database,
       logger: { info: console.log, error: console.error },
-      controllers: [signUpController,loginController].map(controller => ({
+      controllers: [signUpController,loginController, getExtractController, categorizeExtractController].map(controller => ({
         middleware: controller.middleware,
         method: controller.method,
         controller: expressAdapter.adaptControllerFunction(controller.controller),
         path: controller.path
       })),
       middlewares: {
-        auth: (req) => {
-          console.log(req.headers);
-          req.user = {id: 7};
-        }
+        auth: expressAdapter.adaptMiddlewareControllerFunction(authMiddleware.controller)
       }
     })
     await server.start();

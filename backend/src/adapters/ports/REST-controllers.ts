@@ -2,15 +2,15 @@ export type IHTTPController = (
     params: any,
     body: any,
     query: any,
-    headers: any
+    headers: {
+        user?: any
+    }
 ) => Promise<{ response: any; statusCode: number }>;
 
 export type IHTTPMiddleware = (
-    params: any,
-    body: any,
-    query: any,
+    req: any,
     headers: any
-) => void;
+) => Promise<void>;
 
 export type IHTTPControllerPathDescriptor = {
     resource: string;
@@ -27,4 +27,7 @@ export interface IHTTPControllerDescriptor<
     method: IHTTPMethod;
     path: string;
     controller: Controller;
+}
+export interface IHTTPMiddlewareControllerDescriptor {
+    controller: IHTTPMiddleware
 }

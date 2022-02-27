@@ -11,11 +11,11 @@ import {
     Server as AbstractServer,
     IHTTPServerConstructorParams,
 } from './server';
-import { IHTTPControllerDescriptor, IHTTPMiddleware } from '@adapters/REST-controllers';
+import { IHTTPControllerDescriptor } from '@adapters/REST-controllers';
 
 interface IExpressConstructorParams extends IHTTPServerConstructorParams {
     controllers: IHTTPControllerDescriptor<RequestHandler>[];
-    middlewares: { [key: string]: IHTTPMiddleware }
+    middlewares: { [key: string]: RequestHandler }
 }
 
 export class ExpressServer extends AbstractServer {
@@ -56,19 +56,22 @@ export class ExpressServer extends AbstractServer {
         this._app.use(helmet());
         this._app.disable('x-powered-by');
 
+        // this._app.use(middlewares["auth"]);
+
         controllers.forEach((descriptor) => {
             if(descriptor.middleware) {
-                this._app.use(middlewares[descriptor.middleware]);
                 this._app[descriptor.method](
                     descriptor.path,
+                    middlewares[descriptor.middleware],
                     descriptor.controller
-                ); 
+                )
             } else {
                 this._app[descriptor.method](
                     descriptor.path,
                     descriptor.controller
-                );
+                )
             }
+
         });
 
         // authenticatedControllers.forEach((descriptor) => {

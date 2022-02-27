@@ -1,6 +1,5 @@
 import { ITokenService } from "@application/ports";
 import jwt from 'jsonwebtoken';
-import { promisify } from "util";
 
 export class JWTTokenService implements ITokenService {
     token_secret = 'afndfdsfjhcjnkwcw';
@@ -14,11 +13,7 @@ export class JWTTokenService implements ITokenService {
 
     async verify(token: string) {
         // const verify = promisify(jwt.verify);
-        const payload = jwt.verify(token,this.token_secret);
-        console.log({payload});
-        return {
-            email: "",
-            name: ""
-        }
+        const payload = jwt.verify(token,this.token_secret) as any;
+        return payload.data
     }
 }

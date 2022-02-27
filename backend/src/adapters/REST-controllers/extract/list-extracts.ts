@@ -6,9 +6,9 @@ export const GetExtractsControllerFactory = ({
 }: {
     getExtractsUseCase: IGetExtractsUseCase;
 }): IHTTPControllerDescriptor<IHTTPController> => {
-    const fn: IHTTPController = async (_,__,query) => {
+    const fn: IHTTPController = async (_,__,query, { user }) => {
+        console.log(user);
         const userId = query.userId;
-
         if(!userId) throw new Error("Please provide a valid user id");
 
         const resp = await getExtractsUseCase.execute({
