@@ -4,9 +4,8 @@ import {
     IUseCaseFactory,
     IExtractRepository,
     ICategoryRepository,
-    ExtractDTO,
 } from '../ports';
-
+import { CategoryNotFoundError, ExtractNotFoundError } from '@common/errors';
 export type CategorizeExtractsInputParams = {
     extractId: string;
     category: string;
@@ -34,10 +33,10 @@ export const CategorizeExtractsUseCaseFactory: ICategorizeExtractsUseCaseFactory
     return {
         execute: async ({ userId, category: categoryName, extractId }) => {
             const categoryDTO = (await categoriesRepository.getByNameFromUser(userId, categoryName))[0];
-            if(!categoryDTO) throw new Error(`Could not find a category named ${categoryName} associated with user ${userId}`);
+            if(!categoryDTO) throw new CategoryNotFoundError();
             
             const newExtractDTO = await extractsRepository.getById(extractId);
-            if(!newExtractDTO) throw new Error(`Could not find extract with id ${extractId}`);
+            if(!newExtractDTO) throw new ExtractNotFoundError();
             
             const categoryExtractDTOs = await extractsRepository.getByCategoryId(categoryDTO.id!);
             // console.log(newExtractDTO.categoryId);

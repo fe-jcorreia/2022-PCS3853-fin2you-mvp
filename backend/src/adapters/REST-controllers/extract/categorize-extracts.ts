@@ -1,5 +1,6 @@
 import { ICategorizeExtractsUseCase } from '@application/use-cases';
 import { IHTTPController, IHTTPControllerDescriptor } from '../../ports/REST-controllers';
+import { ParameterNotProvidedError } from '@common/errors';
 
 export const CategorizeExtractsControllerFactory = ({
     categorizeExtractUseCase,
@@ -11,7 +12,7 @@ export const CategorizeExtractsControllerFactory = ({
         const category = body.category;
         const userId = body.userId;
 
-        if(!category || !userId) throw new Error("Please provide a userId and a category");
+        if(!category || !userId) throw new ParameterNotProvidedError();
         
         const resp = await categorizeExtractUseCase.execute({
             extractId,

@@ -1,5 +1,6 @@
 import { ISignUpUseCase } from '@application/use-cases';
 import { IHTTPController, IHTTPControllerDescriptor } from '../../ports/REST-controllers';
+import { ParameterNotProvidedError } from '@common/errors';
 
 export const SignUpControllerFactory = ({
     signUpUseCase,
@@ -11,6 +12,8 @@ export const SignUpControllerFactory = ({
         const cpf = body.cpf;
         const name = body.name;
         const password = body.password;
+
+        if(!email || !cpf || !name || !password) throw new ParameterNotProvidedError();
 
         await signUpUseCase.execute({
             email,

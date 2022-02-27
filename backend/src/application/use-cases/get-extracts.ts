@@ -6,6 +6,7 @@ import {
     IOpenBankingService,
     IUserRepository
 } from '../ports';
+import { UserNotFoundError } from '@common/errors';
 
 export type GetExtractsInputParams = {
     userId: string;
@@ -34,7 +35,7 @@ export const GetExtractsUseCaseFactory: IGetExtractsUseCaseFactory = ({
     return {
         execute: async ({ userId }) => {
             const userDTO = await userRepository.getUserById(userId);
-            if(!userDTO) throw new Error("User not found");
+            if(!userDTO) throw new UserNotFoundError();
 
             const oldExtractDTOs = await extractsRepository.getAllFromUser(userId);
             const newExtractDTOs = (await openBankingService.getExtracts(userDTO!.cpf, userDTO!.lastExtractFetch)).map(extract => ({...extract, user: userDTO}));

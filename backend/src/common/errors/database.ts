@@ -1,4 +1,4 @@
-import { CustomError } from '../custom-error';
+import { CustomError } from './custom-error';
 import { DatabaseErrorMessages } from '@common/locales';
 
 export class DatabaseError extends CustomError {

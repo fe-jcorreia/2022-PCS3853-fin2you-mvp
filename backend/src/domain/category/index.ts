@@ -1,5 +1,6 @@
 import { Extract } from "../extract";
 import { User } from '../user';
+import { ExtractNotFoundError } from '@common/errors';
 
 interface CategoryConstructorParams {
     id: string;
@@ -33,7 +34,7 @@ export class Category {
 
     removeExtract(extract: Extract) {
         const oldExtractIndex = this.extracts.findIndex(e => e.id === extract.id);
-        if(oldExtractIndex === -1) throw Error("Extract not found");
+        if(oldExtractIndex === -1) throw new ExtractNotFoundError();
         // this.extracts.splice(oldExtractIndex,1);
         this.total -= extract.amount;
     }

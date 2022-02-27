@@ -1,5 +1,6 @@
 import { IGetExtractsUseCase } from '@application/use-cases';
 import { IHTTPController, IHTTPControllerDescriptor } from '../../ports/REST-controllers';
+import { CannotAlterUserError, ParameterNotProvidedError } from '@common/errors';
 
 export const GetExtractsControllerFactory = ({
     getExtractsUseCase,
@@ -7,9 +8,10 @@ export const GetExtractsControllerFactory = ({
     getExtractsUseCase: IGetExtractsUseCase;
 }): IHTTPControllerDescriptor<IHTTPController> => {
     const fn: IHTTPController = async (_,__,query, { user }) => {
-        console.log(user);
         const userId = query.userId;
-        if(!userId) throw new Error("Please provide a valid user id");
+        if(!userId) throw new ParameterNotProvidedError();
+
+        if(userId !== user.id) throw new CannotAlterUserError();
 
         const resp = await getExtractsUseCase.execute({
             userId,

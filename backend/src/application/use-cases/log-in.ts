@@ -5,6 +5,7 @@ import {
     IEncryptionService,
     ITokenService,
 } from '../ports';
+import { InvalidCredentialsError } from '@common/errors';
 
 export type LoginInputParams = {
     email: string;
@@ -39,16 +40,16 @@ export const LoginUseCaseFactory: ILoginUseCaseFactory = ({
             const userDTO = await userRepository.getUserByEmail(email);
 
             if(!userDTO) {
-                throw new Error('E-mail not found');
+                throw new InvalidCredentialsError();
             }
             const passwordValid = await encryptionService.compare(password,userDTO.hashedPassword);
             
             if(!passwordValid) {
-                throw new Error('Invalid Login credentials');
+                throw new InvalidCredentialsError();
             }
 
             const token = tokenService.generate({
-                userId: userDTO.id || "",
+                id: userDTO.id || "",
                 email: userDTO.email,
                 name: userDTO.name
             });
