@@ -1,5 +1,6 @@
 import { ITokenService } from '@application/ports';
 import { IHTTPMiddleware, IHTTPMiddlewareControllerDescriptor } from '../ports/REST-controllers';
+import { MissingTokenError, MalformedTokenError } from '@common/errors';
 
 export const AuthenticationMiddlewareControllerFactory = ({
     tokenService,
@@ -7,8 +8,9 @@ export const AuthenticationMiddlewareControllerFactory = ({
     tokenService: ITokenService;
 }): IHTTPMiddlewareControllerDescriptor => {
     const fn: IHTTPMiddleware = async (req, headers) => {
+        if(!headers.authentication) throw new MissingTokenError();
         const auth = headers.authentication.split(' ');
-        if(auth[0] !== "Bearer") throw new Error("Malformed token");
+        if(auth[0] !== "Bearer") throw new MalformedTokenError();
         const token = auth[1];
         const user = await tokenService.verify(token);
         req.user = user;

@@ -58,6 +58,7 @@
     "hapi": "^18.1.0",
     "helmet": "^4.6.0",
     "jsonwebtoken": "^8.5.1",
+    "node-polyglot": "^2.4.2",
     "pg": "^8.5.1",
     "pino": "^6.13.2",
     "pino-pretty": "^6.0.0",

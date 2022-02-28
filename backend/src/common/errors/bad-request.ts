@@ -49,3 +49,18 @@ export class UserNotFoundError extends CustomError {
         super(ErrorMessages.USER_NOT_FOUND)
     }
 }
+
+export class MissingTokenError extends CustomError {
+    HTTPstatusCode = 400;
+    constructor() {
+        super(ErrorMessages.MISSING_TOKEN)
+    }
+}
+
+export class MalformedTokenError extends CustomError {
+    HTTPstatusCode = 400;
+    constructor() {
+        super(ErrorMessages.MALFORMED_TOKEN)
+    }
+}
+

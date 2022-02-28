@@ -5,7 +5,9 @@ import helmet from 'helmet';
 import cors from 'cors';
 import { json } from 'body-parser';
 import { Server as WSServer } from 'socket.io';
-import { errorHandler, startPolyglot } from '@iagosrm/common';
+// import { startPolyglot } from '@iagosrm/common';
+import { errorHandler } from './error-handler';
+import { startPolyglot } from './polyglot-middleware';
 import { Messages } from '@common/locales';
 import {
     Server as AbstractServer,
@@ -73,13 +75,6 @@ export class ExpressServer extends AbstractServer {
             }
 
         });
-
-        // authenticatedControllers.forEach((descriptor) => {
-        //     this._app[descriptor.method](
-        //         descriptor.path,
-        //         descriptor.controller
-        //     );
-        // });
 
         this._app.all('*', () => {
             throw new NotFoundError();

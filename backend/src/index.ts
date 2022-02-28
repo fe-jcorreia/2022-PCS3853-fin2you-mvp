@@ -6,6 +6,7 @@ import { ExpressServer } from "./frameworks/http-server/app";
 import { 
   SignUpUseCaseFactory, 
   LoginUseCaseFactory,
+  GetCategoriesUseCaseFactory,
   GetExtractsUseCaseFactory,
   CategorizeExtractsUseCaseFactory
 } from '@application/use-cases';
@@ -22,7 +23,8 @@ import {
   SignUpControllerFactory, 
   LoginControllerFactory,
   CategorizeExtractsControllerFactory,
-  GetExtractsControllerFactory,
+  GetCategoriesControllerFactory,
+  GetExtractsControllerFactory
 } from '@adapters/REST-controllers';
 import {
   AuthenticationMiddlewareControllerFactory
@@ -65,6 +67,9 @@ import { BCryptEncryptionService, JWTTokenService, OpenBankingService } from '@f
       openBankingService,
       userRepository
     });
+    const getCategoriesUseCase = GetCategoriesUseCaseFactory({
+      categoriesRepository
+    })
 
     // controllers
     const signUpController = SignUpControllerFactory({
@@ -75,6 +80,9 @@ import { BCryptEncryptionService, JWTTokenService, OpenBankingService } from '@f
     });
     const getExtractController = GetExtractsControllerFactory({
       getExtractsUseCase
+    });
+    const getCategoriesController = GetCategoriesControllerFactory({
+      getCategoriesUseCase
     });
     const categorizeExtractController = CategorizeExtractsControllerFactory({
       categorizeExtractUseCase
@@ -88,7 +96,13 @@ import { BCryptEncryptionService, JWTTokenService, OpenBankingService } from '@f
     const server = new ExpressServer({
       db: database,
       logger: { info: console.log, error: console.error },
-      controllers: [signUpController,loginController, getExtractController, categorizeExtractController].map(controller => ({
+      controllers: [
+        signUpController,
+        loginController, 
+        getExtractController, 
+        categorizeExtractController,
+        getCategoriesController
+      ].map(controller => ({
         middleware: controller.middleware,
         method: controller.method,
         controller: expressAdapter.adaptControllerFunction(controller.controller),

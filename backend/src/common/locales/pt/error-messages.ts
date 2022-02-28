@@ -2,7 +2,7 @@ import {
     ErrorMessages 
 } from '..';
 
-export const Portuguese = {
+export default {
     [ErrorMessages.DATABASE_ERROR]:
         'Algo deu errado para se conectar ao banco de dados.',
     [ErrorMessages.CANNOT_ALTER_THIS_USER]: 
@@ -16,5 +16,6 @@ export const Portuguese = {
     [ErrorMessages.EXTRACT_NOT_FOUND]: 'Extrato não encontrado.',
     [ErrorMessages.CATEGORY_NOT_FOUND]: 'Categoria não encontrada.',
     [ErrorMessages.USER_NOT_FOUND]: 'Usuário não encontrado.',
-
+    [ErrorMessages.MALFORMED_TOKEN]: "Token de autenticação está com formato errado",
+    [ErrorMessages.MISSING_TOKEN]: "Por favor, fornecer um token de autenticação"
 };

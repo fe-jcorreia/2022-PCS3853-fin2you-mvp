@@ -14,4 +14,6 @@ export default {
     [ErrorMessages.EXTRACT_NOT_FOUND]: 'Extract not found',
     [ErrorMessages.CATEGORY_NOT_FOUND]: 'Category not found',
     [ErrorMessages.USER_NOT_FOUND]: 'User not found',
+    [ErrorMessages.MALFORMED_TOKEN]: "Authentication token has wrong format",
+    [ErrorMessages.MISSING_TOKEN]: "Please provide an authentication token"
 };
