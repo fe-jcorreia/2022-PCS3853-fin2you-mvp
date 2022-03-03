@@ -5,7 +5,7 @@ import helmet from 'helmet';
 import cors from 'cors';
 import { json } from 'body-parser';
 import { Server as WSServer } from 'socket.io';
-import { errorHandler } from './error-handler';
+// import { errorHandler } from './error-handler';
 import { startPolyglot } from './polyglot-middleware';
 import { Messages } from '@common/locales';
 import {

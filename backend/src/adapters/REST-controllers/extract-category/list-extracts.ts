@@ -11,7 +11,7 @@ export const GetExtractsControllerFactory = ({
         const userId = query.userId;
         if(!userId) throw new ParameterNotProvidedError();
 
-        if(userId !== user.id) throw new CannotAlterUserError();
+        if(userId != user.id) throw new CannotAlterUserError();
 
         const resp = await getExtractsUseCase.execute({
             userId,

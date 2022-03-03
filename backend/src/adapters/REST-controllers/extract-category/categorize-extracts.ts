@@ -27,6 +27,7 @@ export const CategorizeExtractsControllerFactory = ({
     };
 
     return {
+        middleware: "auth",
         controller: fn,
         method: 'patch',
         path: '/extracts/:extractId'
