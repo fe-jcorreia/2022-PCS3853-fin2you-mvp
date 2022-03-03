@@ -24,7 +24,8 @@ import {
   LoginControllerFactory,
   CategorizeExtractsControllerFactory,
   GetCategoriesControllerFactory,
-  GetExtractsControllerFactory
+  GetExtractsControllerFactory,
+  ErrorHandlerControllerFactory
 } from '@adapters/REST-controllers';
 import {
   AuthenticationMiddlewareControllerFactory
@@ -89,8 +90,9 @@ import { BCryptEncryptionService, JWTTokenService, OpenBankingService } from '@f
     });
     const authMiddleware = AuthenticationMiddlewareControllerFactory({
       tokenService
-    })
-
+    });
+    const errorHandler = ErrorHandlerControllerFactory();
+    
     // http server
     const expressAdapter = new ExpressControllerAdapter();
     const server = new ExpressServer({
@@ -110,8 +112,12 @@ import { BCryptEncryptionService, JWTTokenService, OpenBankingService } from '@f
       })),
       middlewares: {
         auth: expressAdapter.adaptMiddlewareControllerFunction(authMiddleware.controller)
-      }
+      },
+      errorHandlers: [
+        {controller: expressAdapter.adaptErrorControllerFunction(errorHandler.controller)}
+      ]
     })
+
     await server.start();
 
   } catch(e) {

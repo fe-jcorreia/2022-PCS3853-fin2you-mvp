@@ -7,6 +7,7 @@ import { IDatabase } from '@adapters/repositories';
 import { ILogger } from '@common/logger';
 import {
     IHTTPController,
+    IHTTPErrorHandler,
     IHTTPControllerPathDescriptor,
     IHTTPMiddleware,
 } from '@adapters/REST-controllers';
@@ -71,7 +72,7 @@ export abstract class Server {
 }
 
 export interface IHTTPFrameworkAdapter {
-    adaptControllerFunction(fn: IHTTPController): (...args) => Promise<any>;
+    adaptControllerFunction(fn: IHTTPController | IHTTPErrorHandler): (...args) => Promise<any>;
     adaptMiddlewareControllerFunction(fn: IHTTPMiddleware): (...args) => Promise<void>;
     adaptPath(pathDescriptor: IHTTPControllerPathDescriptor): string;
 

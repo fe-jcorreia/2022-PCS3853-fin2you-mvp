@@ -19,6 +19,8 @@ export class CannotAlterUserError extends CustomError {
     HTTPstatusCode = 403;
     constructor() {
         super(ErrorMessages.CANNOT_ALTER_THIS_USER)
+        console.log('alter user')
+
     }
 }
 

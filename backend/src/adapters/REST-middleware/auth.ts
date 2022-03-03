@@ -1,12 +1,12 @@
 import { ITokenService } from '@application/ports';
-import { IHTTPMiddleware, IHTTPMiddlewareControllerDescriptor } from '../ports/REST-controllers';
+import { IHTTPMiddleware, IHTTPControllerDescriptor } from '../ports/REST-controllers';
 import { MissingTokenError, MalformedTokenError } from '@common/errors';
 
 export const AuthenticationMiddlewareControllerFactory = ({
     tokenService,
 }: {
     tokenService: ITokenService;
-}): IHTTPMiddlewareControllerDescriptor => {
+}): IHTTPControllerDescriptor<IHTTPMiddleware> => {
     const fn: IHTTPMiddleware = async (req, headers) => {
         if(!headers.authorization) throw new MissingTokenError();
         const auth = headers.authorization.split(' ');

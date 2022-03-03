@@ -1,11 +1,10 @@
-import express, { Express, RequestHandler } from 'express';
+import express, { Express, RequestHandler, ErrorRequestHandler } from 'express';
 import 'express-async-errors';
 import { NotFoundError } from '@iagosrm/common';
 import helmet from 'helmet';
 import cors from 'cors';
 import { json } from 'body-parser';
 import { Server as WSServer } from 'socket.io';
-// import { startPolyglot } from '@iagosrm/common';
 import { errorHandler } from './error-handler';
 import { startPolyglot } from './polyglot-middleware';
 import { Messages } from '@common/locales';
@@ -14,9 +13,11 @@ import {
     IHTTPServerConstructorParams,
 } from './server';
 import { IHTTPControllerDescriptor } from '@adapters/REST-controllers';
+import { nextTick } from 'process';
 
 interface IExpressConstructorParams extends IHTTPServerConstructorParams {
     controllers: IHTTPControllerDescriptor<RequestHandler>[];
+    errorHandlers: IHTTPControllerDescriptor<ErrorRequestHandler>[];
     middlewares: { [key: string]: RequestHandler }
 }
 
@@ -26,7 +27,7 @@ export class ExpressServer extends AbstractServer {
     _logger: any;
     _io: WSServer;
 
-    constructor({ db, logger, controllers, middlewares }: IExpressConstructorParams) {
+    constructor({ db, logger, controllers, errorHandlers, middlewares }: IExpressConstructorParams) {
         
         super({ db, logger });
         this._app = express();
@@ -62,14 +63,14 @@ export class ExpressServer extends AbstractServer {
 
         controllers.forEach((descriptor) => {
             if(descriptor.middleware) {
-                this._app[descriptor.method](
-                    descriptor.path,
+                this._app[descriptor.method!](
+                    descriptor.path!,
                     middlewares[descriptor.middleware],
                     descriptor.controller
                 )
             } else {
-                this._app[descriptor.method](
-                    descriptor.path,
+                this._app[descriptor.method!](
+                    descriptor.path!,
                     descriptor.controller
                 )
             }
@@ -80,6 +81,11 @@ export class ExpressServer extends AbstractServer {
             throw new NotFoundError();
         });
 
-        this._app.use(errorHandler);
+        // this._app.use((error, _, __, ___) => {
+        //     console.log('test error',error)
+        // })
+        errorHandlers.map(errorHandler => {
+            this._app.use(errorHandler.controller)
+        });
     }
 }

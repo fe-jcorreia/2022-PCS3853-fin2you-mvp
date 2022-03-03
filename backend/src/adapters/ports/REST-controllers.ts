@@ -12,6 +12,11 @@ export type IHTTPMiddleware = (
     headers: any
 ) => Promise<void>;
 
+export type IHTTPErrorHandler = (
+    error: any,
+    translator: any
+) => Promise<{ response: any; statusCode: number }>;
+
 export type IHTTPControllerPathDescriptor = {
     resource: string;
     isParams: boolean;
@@ -24,10 +29,10 @@ export interface IHTTPControllerDescriptor<
     // Path = IHTTPControllerPathDescriptor
 > {
     middleware?: string,
-    method: IHTTPMethod;
-    path: string;
+    method?: IHTTPMethod;
+    path?: string;
     controller: Controller;
 }
-export interface IHTTPMiddlewareControllerDescriptor {
-    controller: IHTTPMiddleware
-}
+// export interface IHTTPMiddlewareControllerDescriptor {
+//     controller: IHTTPMiddleware
+// }
