@@ -75,7 +75,6 @@ export const CategorizeExtractsUseCaseFactory: ICategorizeExtractsUseCaseFactory
                 id: newExtractDTO.id,
                 amount: newExtractDTO.amount
             }));
-
             await categoriesRepository.updateCategory({
                 id: categoryDTO.id,
                 total: category.total,

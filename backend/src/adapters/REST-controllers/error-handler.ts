@@ -1,4 +1,3 @@
-import { ICategorizeExtractsUseCase } from '@application/use-cases';
 import { IHTTPErrorHandler, IHTTPControllerDescriptor } from '../ports/REST-controllers';
 import { CustomError } from '@common/errors';
 

@@ -81,4 +81,8 @@ class TypeORMCollectionAdapter<P> implements IBaseCollection<P> {
     const result = await this.repository.save(entities);
     return result ? true : false;
   }
+
+  async deleteAll() {
+    await this.repository.query(`DELETE from ${this.repository.metadata.tableName}`);
+  }
 }

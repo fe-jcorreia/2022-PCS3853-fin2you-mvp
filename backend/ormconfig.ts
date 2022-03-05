@@ -26,5 +26,10 @@ module.exports = [
     ...commonConfig,
     database: `${__dirname}/prod-data/db.sqlite`,
     name: "production",
+  },
+  {
+    ...commonConfig,
+    database: `${__dirname}/test-data/db.sqlite`,
+    name: "test",
   }
 ];

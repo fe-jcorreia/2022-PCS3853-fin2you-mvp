@@ -19,7 +19,7 @@ export const CategorizeExtractsControllerFactory = ({
             category,
             userId
         });
-
+        
         return {
             response: resp,
             statusCode: 201,

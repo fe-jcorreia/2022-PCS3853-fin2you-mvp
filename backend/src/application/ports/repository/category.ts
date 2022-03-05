@@ -10,7 +10,7 @@ export class CategoryDTO {
     name: string;
 
     @ManyToOne(() => UserDTO)
-    user: UserDTO
+    user?: UserDTO
     @RelationId("user")
     userId: string;
     

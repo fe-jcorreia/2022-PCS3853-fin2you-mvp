@@ -16,13 +16,13 @@ export class ExtractDTO {
     type: string;
 
     @ManyToOne(() => UserDTO)
-    user: UserDTO
+    user?: UserDTO
     @RelationId("user")
     userId: string;
     
     @ManyToOne(() => CategoryDTO, /*, {eager: true}*/)
-    category: CategoryDTO
+    category?: CategoryDTO 
     @RelationId("category")
-    categoryId: string;
+    categoryId: string | null;
 };
 
