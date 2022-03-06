@@ -59,7 +59,7 @@ const testDataBuilder = async (database) => {
     }
 }
 
-describe("Categorizing an extract which is", () => {
+describe.skip("Categorizing an extract which is", () => {
 
     const database = new TypeORMDatabase({ 
         dbConnectionName: 'test',
