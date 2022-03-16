@@ -9,6 +9,24 @@ Passo a Passo
                 rel: "CPF"
             permissions: ["", ""] (descrito em https://openbanking-brasil.github.io/areadesenvolvedor/swagger/swagger_consents_apis.yaml)
             expirationDateTime
+            {
+
+            "data": {
+              "loggedUser": {
+                "document": {
+                  "identification": "11111111111",
+                  "rel": "CPF"
+                }
+              },             
+              "permissions": [
+                "ACCOUNTS_READ",
+                "ACCOUNTS_OVERDRAFT_LIMITS_READ",
+                "RESOURCES_READ"
+              ],
+              "expirationDateTime": "2023-05-21T08:30:00Z"
+            }
+          }
+
 
 - Recebendo um HTTP 201 com o seguinte corpo obrigatório:
   "data": {
@@ -151,3 +169,50 @@ Passo a Passo
 
 
 - Em seguida, fazer a consulta da API de CONTAS
+- Mandar GET /accounts/v1/accounts/{accountId}/transactions?compeCode=str&branchCode=stri&number=string&checkDigit=s
+- Com os dados obrigatorios:
+    Headers:
+      Authorization: BANCOEX:...
+    Na URL:
+      accountId
+      Parâmetros:
+        compeCode: NUBANK 260
+        branchCode: agência 0001
+        number : npumero da conta
+        checkDigit : digitio verificador (number - checkDigit)
+
+- Reecebe de volta HTTP 201 com (senao é o response error de sempre):
+  {
+    "data": [
+        {
+          "transactionId": "TXpRMU9UQTROMWhZV2xSU1FUazJSMDl",
+          "completedAuthorisedPaymentType": "TRANSACAO_EFETIVADA",
+          "creditDebitType": "DEBITO",
+          "transactionName": "TRANSFCWAR5TXHCX5I9IDBHML8082N8NEO30M6LNNG7ANAYIJYRM00ZBZPU8",
+          "type": "PIX",
+          "amount": 500.54,
+          "transactionCurrency": "BRL",
+          "transactionDate": "2021-01-07",
+          "partieCnpjCpf": "43908445778",
+          "partiePersonType": "PESSOA_NATURAL",
+          "partieCompeCode": "001",
+          "partieBranchCode": "6272",
+          "partieNumber": "67890854360",
+          "partieCheckDigit": "4"
+        }
+      ],
+      "links": {
+        "self": "https://api.banco.com.br/open-banking/api/v1/resource",
+        "first": "https://api.banco.com.br/open-banking/api/v1/resource",
+        "prev": "https://api.banco.com.br/open-banking/api/v1/resource",
+        "next": "https://api.banco.com.br/open-banking/api/v1/resource",
+        "last": "https://api.banco.com.br/open-banking/api/v1/resource"
+      },
+      "meta": {
+        "totalRecords": 1,
+        "totalPages": 1,
+        "requestDateTime": "2021-05-21T08:30:00Z"
+      }
+  }
+
+

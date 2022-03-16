@@ -3,11 +3,30 @@ const server = jsonServer.create()
 const router = jsonServer.router('db.json')
 const middlewares = jsonServer.defaults()
 
+const consentId = "urn:bancoex:C1DD33123";
+
+const resp_not_ok = {
+  "errors": [
+    {
+      "code": "string",
+      "title": "string",
+      "detail": "string"
+    }
+  ],
+  "meta": {
+    "totalRecords": 1,
+    "totalPages": 1,
+    "requestDateTime": "2021-05-21T08:30:00Z"
+  }
+}
+
 // Set default middlewares (logger, static, cors and no-cache)
 server.use(middlewares)
 
-// Add custom routes before JSON Server router
+// part 2 - get data, using previous token
 server.get('/customers/v1/personal/identifications', (req, res) => {
+  const newConsentId = req.headers.authorization;
+
   const resp_ok = {
       "data": [
         {
@@ -116,6 +135,51 @@ server.get('/customers/v1/personal/identifications', (req, res) => {
         "requestDateTime": "2021-05-21T08:30:00Z"
       }
     }
+
+  const error_occured = (newConsentId != consentId);
+
+  const status_number = ( error_occured ? 500 : 201 )
+  const resp = ( error_occured ? resp_not_ok : resp_ok)
+    
+  res.status(status_number)
+    .jsonp(resp)
+})
+
+// part 3 - get transactions
+server.get('/customers/v1/personal/identifications', (req, res) => {
+  const resp_ok = {
+    "data": [
+      {
+        "transactionId": "TXpRMU9UQTROMWhZV2xSU1FUazJSMDl",
+        "completedAuthorisedPaymentType": "TRANSACAO_EFETIVADA",
+        "creditDebitType": "DEBITO",
+        "transactionName": "TRANSFCWAR5TXHCX5I9IDBHML8082N8NEO30M6LNNG7ANAYIJYRM00ZBZPU8",
+        "type": "PIX",
+        "amount": 500.54,
+        "transactionCurrency": "BRL",
+        "transactionDate": "2021-01-07",
+        "partieCnpjCpf": "43908445778",
+        "partiePersonType": "PESSOA_NATURAL",
+        "partieCompeCode": "001",
+        "partieBranchCode": "6272",
+        "partieNumber": "67890854360",
+        "partieCheckDigit": "4"
+      }
+    ],
+    "links": {
+      "self": "https://api.banco.com.br/open-banking/api/v1/resource",
+      "first": "https://api.banco.com.br/open-banking/api/v1/resource",
+      "prev": "https://api.banco.com.br/open-banking/api/v1/resource",
+      "next": "https://api.banco.com.br/open-banking/api/v1/resource",
+      "last": "https://api.banco.com.br/open-banking/api/v1/resource"
+    },
+    "meta": {
+      "totalRecords": 1,
+      "totalPages": 1,
+      "requestDateTime": "2021-05-21T08:30:00Z"
+    }
+  }
+     
     
   res.jsonp(req.query)
 })
@@ -131,22 +195,45 @@ server.use((req, res, next) => {
   next()
 })
 
+// part 1 - consent
 server.post('/consents/v1/consents', (req, res) => {
-  console.log(req);
+  /* 
+  const data = req.body.data
+
+  const doc = data.loggedUser.document
+  const id = doc.identification
+  const type = doc.rel
+
+  const error_occured = isValidId(type, id)
+
+  const permissions = data.permissions
+  const expirationDateTime = data.expirationDateTime
+  */
+
+  const error_occured = false;
+
+  const data = req.body
+  console.log(data)
+
+  const creationDateTime = new Date().toISOString()
+  const expirationDateTime = new Date().toISOString()
+  const transactionFromDateTime = new Date().toISOString()
+  const transactionToDateTime = new Date().toISOString()
+
   const resp_ok = {
     "data": {
-      "consentId": "urn:bancoex:C1DD33123",
-      "creationDateTime": "2021-05-21T08:30:00Z",
+      "consentId": consentId,
+      "creationDateTime": creationDateTime,
       "status": "AWAITING_AUTHORISATION",
-      "statusUpdateDateTime": "2021-05-21T08:30:00Z",
+      "statusUpdateDateTime": creationDateTime,
       "permissions": [
         "ACCOUNTS_READ",
         "ACCOUNTS_OVERDRAFT_LIMITS_READ",
         "RESOURCES_READ"
       ],
-      "expirationDateTime": "2021-05-21T08:30:00Z",
-      "transactionFromDateTime": "2021-01-01T00:00:00Z",
-      "transactionToDateTime": "2021-02-01T23:59:59Z"
+      "expirationDateTime": expirationDateTime,
+      "transactionFromDateTime": transactionFromDateTime,
+      "transactionToDateTime": transactionToDateTime
     },
     "links": {
       "self": "https://api.banco.com.br/open-banking/api/v1/resource",
@@ -158,35 +245,17 @@ server.post('/consents/v1/consents', (req, res) => {
     "meta": {
       "totalRecords": 1,
       "totalPages": 1,
-      "requestDateTime": "2021-05-21T08:30:00Z"
-    }
-  }
-
-  const resp_not_ok = {
-    "errors": [
-      {
-        "code": "string",
-        "title": "string",
-        "detail": "string"
-      }
-    ],
-    "meta": {
-      "totalRecords": 1,
-      "totalPages": 1,
-      "requestDateTime": "2021-05-21T08:30:00Z"
+      "requestDateTime": creationDateTime
     }
   }
   
-  const error_occured = Math.random() > 0.9;
 
   const status_number = ( error_occured ? 500 : 201 )
   const resp = ( error_occured ? resp_not_ok : resp_ok)
-  
 
   res.status(status_number)
     .jsonp(resp)
 })
-
 
 
 // Use default router
