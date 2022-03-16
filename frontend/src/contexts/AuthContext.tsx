@@ -5,6 +5,7 @@ import Router from "next/router";
 import jwt from "jwt-decode";
 
 type User = {
+  id: number;
   name: string;
   email: string;
 };
@@ -51,8 +52,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const { "nextauth.token": token } = parseCookies();
 
     if (token) {
-      const response: { data: { email: string; name: string } } = jwt(token);
-      setUser(response.data);
+      const { data }: { data: { id: number; email: string; name: string } } =
+        jwt(token);
+
+      api.defaults.headers["Authorization"] = `Bearer ${token}`;
+      setUser(data);
     }
   }, []);
 
@@ -80,7 +84,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
         path: "/",
       });
 
-      const jwtResponse: { data: { email: string; name: string } } = jwt(token);
+      const jwtResponse: { data: { id: number; email: string; name: string } } =
+        jwt(token);
       setUser(jwtResponse.data);
 
       api.defaults.headers["Authorization"] = `Bearer ${token}`;

@@ -15,6 +15,7 @@ import {
   Image,
   Link,
   Button,
+  IconButton,
 } from "@chakra-ui/react";
 import { NextPage } from "next";
 import {
@@ -24,11 +25,14 @@ import {
   FiFilm,
   FiHome,
   FiShoppingBag,
+  FiEdit,
 } from "react-icons/fi";
 import { ApexOptions } from "apexcharts";
 import dynamic from "next/dynamic";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
+import { DescriptionItem } from "../components/DescriptionItem";
+import { api } from "../services/api";
 
 const Chart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
@@ -84,10 +88,35 @@ const series = [
   },
 ];
 
+type Extracts = {
+  id: string;
+  description: string;
+  amount: number;
+  type: "credit" | "debit";
+  userId: number;
+};
+
 const Dashboard: NextPage = () => {
   const { user, isAuthenticated } = useContext(AuthContext);
+  const [extracts, setExtracts] = useState([] as Extracts[]);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    async function getExtracts() {
+      try {
+        const response = await api.get("extracts", {
+          params: { userId: user?.id },
+        });
+
+        setExtracts(response.data.extracts);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    if (user) {
+      getExtracts();
+    }
+  }, [user]);
 
   return (
     <>
@@ -104,20 +133,21 @@ const Dashboard: NextPage = () => {
                     <Th>Descrição</Th>
                     <Th>Valor</Th>
                     <Th>Categoria</Th>
+                    <Th>Editar</Th>
                   </Tr>
                 </Thead>
                 <Tbody>
-                  <Tr>
-                    <Td>Faculdade</Td>
-                    <Td color="red">-R$1.850,00</Td>
-                    <Td flexDirection="row">
-                      <Tag size="lg" colorScheme="cyan" borderRadius="full">
-                        <Icon as={FiBook} mr="0.5rem" />
-                        <TagLabel>Estudos</TagLabel>
-                      </Tag>
-                    </Td>
-                  </Tr>
-                  <Tr>
+                  {extracts?.map((item) => (
+                    <DescriptionItem
+                      key={item.id}
+                      id={item.id}
+                      description={item.description}
+                      amount={item.amount}
+                      type={item.type}
+                    />
+                  ))}
+
+                  {/* <Tr>
                     <Td>Salário mensal</Td>
                     <Td color="green">+R$4.500,00</Td>
                     <Td>
@@ -166,7 +196,7 @@ const Dashboard: NextPage = () => {
                         <TagLabel>Outros</TagLabel>
                       </Tag>
                     </Td>
-                  </Tr>
+                  </Tr> */}
                 </Tbody>
               </Table>
 
