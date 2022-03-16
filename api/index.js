@@ -3,7 +3,8 @@ const server = jsonServer.create()
 const router = jsonServer.router('db.json')
 const middlewares = jsonServer.defaults()
 
-const consentId = "urn:bancoex:C1DD33123";
+const consentId = "urn:bancoex:C1DD33123"
+const accountId = "92792126019929279212650822221989319252576"
 
 const resp_not_ok = {
   "errors": [
@@ -25,7 +26,7 @@ server.use(middlewares)
 
 // part 2 - get data, using previous token
 server.get('/customers/v1/personal/identifications', (req, res) => {
-  const newConsentId = req.headers.authorization;
+  const newConsentId = req.headers.authorization
 
   const resp_ok = {
       "data": [
@@ -136,7 +137,7 @@ server.get('/customers/v1/personal/identifications', (req, res) => {
       }
     }
 
-  const error_occured = (newConsentId != consentId);
+  const error_occured = (newConsentId != consentId)
 
   const status_number = ( error_occured ? 500 : 201 )
   const resp = ( error_occured ? resp_not_ok : resp_ok)
@@ -145,8 +146,60 @@ server.get('/customers/v1/personal/identifications', (req, res) => {
     .jsonp(resp)
 })
 
-// part 3 - get transactions
-server.get('/customers/v1/personal/identifications', (req, res) => {
+// part 3 - get accountId
+server.get('/accounts/v1/accounts', (req, res) => {
+  const query = req.query
+  // console.log(params)
+
+  const newConsentId = req.headers.authorization
+
+  const resp_ok = {
+      "data": [
+        {
+          "brandName": "NuBank",
+          "companyCnpj": "21128159000166",
+          "type": "CONTA_DEPOSITO_A_VISTA",
+          "compeCode": "001",
+          "branchCode": "6272",
+          "number": "94088392",
+          "checkDigit": "4",
+          "accountId": "92792126019929279212650822221989319252576"
+        }
+      ],
+      "links": {
+        "self": "https://api.banco.com.br/open-banking/api/v1/resource",
+        "first": "https://api.banco.com.br/open-banking/api/v1/resource",
+        "prev": "https://api.banco.com.br/open-banking/api/v1/resource",
+        "next": "https://api.banco.com.br/open-banking/api/v1/resource",
+        "last": "https://api.banco.com.br/open-banking/api/v1/resource"
+      },
+      "meta": {
+        "totalRecords": 1,
+        "totalPages": 1,
+        "requestDateTime": "2021-05-21T08:30:00Z"
+      }
+    }
+
+  const error_occured = (newConsentId != consentId)
+
+  const status_number = ( error_occured ? 500 : 200 )
+  const resp = ( error_occured ? resp_not_ok : resp_ok)
+    
+  res.status(status_number)
+    .jsonp(resp)
+})
+
+// part 4 - get transactions
+// /{accountId}/transactions
+// /accounts/v1/accounts/{accountId}/transactions?compeCode=str&branchCode=stri&number=string&checkDigit=s
+server.get('/accounts/v1/accounts/:accountId/transactions', (req, res) => {
+
+  const newConsentId = req.headers.authorization
+  const newAccountId = req.params.accountId
+  const query = req.query
+
+  console.log(query)
+
   const resp_ok = {
     "data": [
       {
@@ -179,9 +232,14 @@ server.get('/customers/v1/personal/identifications', (req, res) => {
       "requestDateTime": "2021-05-21T08:30:00Z"
     }
   }
-     
+
+  const error_occured = (newConsentId != consentId || newAccountId != accountId)
+
+  const status_number = ( error_occured ? 500 : 200 )
+  const resp = ( error_occured ? resp_not_ok : resp_ok)
     
-  res.jsonp(req.query)
+  res.status(status_number)
+    .jsonp(resp)
 })
 
 // To handle POST, PUT and PATCH you need to use a body-parser
@@ -210,7 +268,7 @@ server.post('/consents/v1/consents', (req, res) => {
   const expirationDateTime = data.expirationDateTime
   */
 
-  const error_occured = false;
+  const error_occured = false
 
   const data = req.body
   console.log(data)
