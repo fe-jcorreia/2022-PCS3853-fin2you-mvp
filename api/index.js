@@ -120,7 +120,19 @@ server.get('/customers/v1/personal/identifications', (req, res) => {
   res.jsonp(req.query)
 })
 
+// To handle POST, PUT and PATCH you need to use a body-parser
+// You can use the one used by JSON Server
+server.use(jsonServer.bodyParser)
+server.use((req, res, next) => {
+  if (req.method === 'POST') {
+    req.body.createdAt = Date.now()
+  }
+  // Continue to JSON Server router
+  next()
+})
+
 server.post('/consents/v1/consents', (req, res) => {
+  console.log(req);
   const resp_ok = {
     "data": {
       "consentId": "urn:bancoex:C1DD33123",
@@ -175,16 +187,7 @@ server.post('/consents/v1/consents', (req, res) => {
     .jsonp(resp)
 })
 
-// To handle POST, PUT and PATCH you need to use a body-parser
-// You can use the one used by JSON Server
-server.use(jsonServer.bodyParser)
-server.use((req, res, next) => {
-  if (req.method === 'POST') {
-    req.body.createdAt = Date.now()
-  }
-  // Continue to JSON Server router
-  next()
-})
+
 
 // Use default router
 server.use(router)
