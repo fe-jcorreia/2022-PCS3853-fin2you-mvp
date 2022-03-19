@@ -1,5 +1,5 @@
 {
-  "name": "nodejs-poc",
+  "name": "fin2you",
   "version": "1.0.0",
   "description": "A proof of concept of a very complete NodeJS API",
   "scripts": {
