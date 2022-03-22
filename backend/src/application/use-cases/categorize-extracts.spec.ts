@@ -29,7 +29,7 @@ const testDataBuilder = async (database) => {
         amount: args.amount || 100,
         categoryId: args.categoryId || null,
         description: '',
-        timeStamp: 1,
+        timeStamp: '1',
         type: 'credit',
         userId: args.userId || '1',
     });
@@ -76,10 +76,12 @@ describe.skip("Categorizing an extract which is", () => {
     beforeEach(async () => {
         const testData = await testDataBuilder(database)
 
+        const openBankingService = new OpenBankingService();
         const encryptionService = new BCryptEncryptionService();
         const signupUseCase = SignUpUseCaseFactory({
             userRepository: testData.userRepository,
-            encryptionService
+            encryptionService,
+            openBankingService
         });
 
         await signupUseCase.execute({

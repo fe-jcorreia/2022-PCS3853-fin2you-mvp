@@ -9,7 +9,8 @@ export class TestUserDTOHelper {
         cpf: '12345',
         categories: [],
         extracts: [],
-        lastExtractFetch: 0
+        consentId: '',
+        accountId: ''
     }
 
     getUser() {
