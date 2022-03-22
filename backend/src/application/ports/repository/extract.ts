@@ -9,7 +9,7 @@ export class ExtractDTO {
     @Column()
     amount: number;
     @Column()
-    timeStamp: number;
+    timeStamp: string;
     @Column()
     description: string;
     @Column()

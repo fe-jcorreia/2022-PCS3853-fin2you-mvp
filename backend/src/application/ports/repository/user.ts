@@ -23,6 +23,10 @@ export class UserDTO {
     })
     extracts: ExtractDTO[]
     @Column()
-    lastExtractFetch: number;
+    accountId: string;
+    @Column()
+    consentId: string;
+    // @Column()
+    // lastExtractFetch: number;
 };
 

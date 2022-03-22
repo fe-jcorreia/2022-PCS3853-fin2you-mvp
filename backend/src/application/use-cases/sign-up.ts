@@ -3,7 +3,8 @@ import {
     IUseCaseFactory,
     IUserRepository,
     UserDTO,
-    IEncryptionService
+    IEncryptionService,
+    IOpenBankingService
 } from '../ports';
 import { User } from '@domain';
 import { CategoryDTO } from '@/application/ports/repository/category';
@@ -18,6 +19,7 @@ type Return = void;
 type Dependencies = {
     userRepository: IUserRepository;
     encryptionService: IEncryptionService;
+    openBankingService: IOpenBankingService;
 };
 
 export type ISignUpUseCase = IUseCase<InputParams, Return>;
@@ -29,7 +31,8 @@ export type ISignUpUseCaseFactory = IUseCaseFactory<
 
 export const SignUpUseCaseFactory: ISignUpUseCaseFactory = ({
     userRepository,
-    encryptionService
+    encryptionService,
+    openBankingService
 }) => {
     return {
         execute: async ({ email, cpf, name, password }) => {
@@ -41,6 +44,9 @@ export const SignUpUseCaseFactory: ISignUpUseCaseFactory = ({
                 return dto;
             });
 
+            const consentId = await openBankingService.getConsentId(user.getCPF());
+            const accountId = await openBankingService.getAccountId(consentId);
+
             const userDTO = {
                 email: user.getEmail(),
                 cpf: user.getCPF(),
@@ -48,7 +54,8 @@ export const SignUpUseCaseFactory: ISignUpUseCaseFactory = ({
                 hashedPassword: await encryptionService.encrypt(user.getPassword()),
                 extracts: [],
                 categories: categoryDTOs,
-                lastExtractFetch: 0
+                accountId,
+                consentId
             };
             // console.log(userDTO)
             await userRepository.insertUser(userDTO)

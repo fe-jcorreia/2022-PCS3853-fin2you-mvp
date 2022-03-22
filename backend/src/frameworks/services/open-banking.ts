@@ -1,13 +1,57 @@
 import { IOpenBankingService } from "@application/ports";
-import { v4 as uuidv4 } from 'uuid';
+import axios from 'axios';
 
 export class OpenBankingService implements IOpenBankingService {
-    getExtracts(_, lastExtractFetch: number) {
-        if(Date.now() - lastExtractFetch > 30 * 60 * 1000) // a new extract every 30 minutes
-            return new Promise<any[]>(r => r([
-                { id: uuidv4(), description: "mock description", amount: 17, timeStamp: Date.now(), type: 'debit' },
-                { id: uuidv4(), description: "mock description", amount: 110, timeStamp: Date.now(), type: 'credit' }
-            ]))
-        return new Promise<[]>(r => r([]));
+
+    _baseUrl: string = 'https://fin2you-bank.herokuapp.com';
+    // _baseUrl: string = 'http://localhost:3000';
+    async getExtracts(consentId: string, accountId: string) {
+        const { data } = await axios.get(`${this._baseUrl}/accounts/v1/accounts/${accountId}/transactions?compeCode=str&branchCode=stri&number=string&checkDigit=s`, {
+            headers: {
+                Authorization: consentId
+            }
+        });
+        return data.data.map(extract => ({
+            id: extract.transactionId,
+            type: extract.creditDebitType,
+            amount: extract.amount,
+            description: extract.type,
+            timeStamp: extract.transactionDate
+        }))
+    }
+
+    async getConsentId(cpf: string) {
+      try {
+        const { data } = await axios.post(`${this._baseUrl}/consents/v1/consents`,{
+          "data": {
+            "loggedUser": {
+              "document": {
+                "identification": cpf,
+                "rel": "CPF"
+              }
+            },             
+            "permissions": [
+              "ACCOUNTS_READ",
+              "ACCOUNTS_OVERDRAFT_LIMITS_READ",
+              "RESOURCES_READ"
+            ],
+            "expirationDateTime": "2023-05-21T08:30:00Z"
+          }
+        }) 
+        return data.data.consentId;
+      } catch (e) {
+        throw e;
+        // console.log('axios error',e)
+      }
+
+    }
+
+    async getAccountId(consentId: string) {
+        const { data } = await axios.get(`${this._baseUrl}/accounts/v1/accounts`, {
+            headers: {
+                Authorization: consentId
+            }
+        })
+        return data.data[0].accountId;
     }
 }

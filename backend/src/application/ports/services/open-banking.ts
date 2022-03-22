@@ -1,3 +1,5 @@
 export interface IOpenBankingService {
-    getExtracts: (cpf: string, lastLogin: number) => Promise<any[]>
+    getExtracts: (consentId: string, accountId: string) => Promise<any[]>;
+    getAccountId: (consentId: string) => Promise<string>
+    getConsentId: (cpf: string) => Promise<string>
 }

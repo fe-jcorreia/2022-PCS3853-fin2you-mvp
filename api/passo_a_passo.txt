@@ -1,5 +1,7 @@
 Passo a Passo
 
+docker run -e PORT=3000 -p 3000:3000 iagosrm/fin2you-bank
+
 Parte 1
 - Pedir consentimento para a API externa, obrigatorio (POST /consents/v1/consents):
     Header:

@@ -15,3 +15,5 @@ In this case, there is no need to use Docker at all. Just do `npm run dev`.
 - `docker tag iagosrm/fin2you registry.heroku.com/fin2you/web`
 - `docker push registry.heroku.com/fin2you/web`
 - `heroku container:release web -a fin2you`
+- `heroku git:remote -a fin2you`
+- `git push heroku branch:main`

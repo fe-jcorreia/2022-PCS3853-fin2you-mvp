@@ -52,7 +52,8 @@ import { BCryptEncryptionService, JWTTokenService, OpenBankingService } from '@f
     // use cases
     const signUpUseCase = SignUpUseCaseFactory({ 
       userRepository,
-      encryptionService
+      encryptionService,
+      openBankingService
     });
     const loginUseCase = LoginUseCaseFactory({
       userRepository,

@@ -38,10 +38,12 @@ export const GetExtractsUseCaseFactory: IGetExtractsUseCaseFactory = ({
             if(!userDTO) throw new UserNotFoundError();
 
             const oldExtractDTOs = await extractsRepository.getAllFromUser(userId);
-            const newExtractDTOs = (await openBankingService.getExtracts(userDTO!.cpf, userDTO!.lastExtractFetch)).map(extract => ({...extract, user: userDTO}));
+            const newExtractDTOs = (await openBankingService.getExtracts(userDTO.consentId, userDTO.accountId)).map(extract => ({...extract, user: userDTO}));
             
-            const extracts = [...oldExtractDTOs, ...newExtractDTOs]
-            userDTO.lastExtractFetch = Date.now();
+            const extracts = [...oldExtractDTOs, ...newExtractDTOs].filter(function(item, pos, self) {
+                return self.findIndex(i => i.id === item.id) == pos;
+            })
+            // userDTO.lastExtractFetch = Date.now();
             userDTO.extracts = extracts;
             await userRepository.updateUser(userDTO);
 

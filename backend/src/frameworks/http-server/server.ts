@@ -56,7 +56,7 @@ export abstract class Server {
         // } catch {
         //     this._logger.error('Failed to connect to database');
         // }
-        const alternativePort = this._hasHTTPS ? '443' : '3000';
+        const alternativePort = this._hasHTTPS ? '443' : '3006';
         this._server.listen(
             parseInt(process.env.PORT || alternativePort),
             () => {
