@@ -12,3 +12,6 @@ In this case, there is no need to use Docker at all. Just do `npm run dev`.
 - `docker build -t iagosrm/fin2you .` to build image
 - `docker run --name fin2you -p 3006:3006 iagosrm/fin2you` to run this service.
 - `docker push iagosrm/fin2you` to update image in DockerHub
+- `docker tag iagosrm/fin2you registry.heroku.com/fin2you/web`
+- `docker push registry.heroku.com/fin2you/web`
+- `heroku container:release web -a fin2you`

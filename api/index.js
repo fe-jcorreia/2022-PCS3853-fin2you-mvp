@@ -318,6 +318,6 @@ server.post('/consents/v1/consents', (req, res) => {
 
 // Use default router
 server.use(router)
-server.listen(3000, () => {
+server.listen(process.env.PORT, () => {
   console.log('JSON Server is running')
 })
