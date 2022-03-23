@@ -1,12 +1,8 @@
 import {
   Heading,
   HStack,
-  Icon,
   Table,
-  Tag,
-  TagLabel,
   Tbody,
-  Td,
   Th,
   Thead,
   Tr,
@@ -15,18 +11,8 @@ import {
   Image,
   Link,
   Button,
-  IconButton,
 } from "@chakra-ui/react";
 import { NextPage } from "next";
-import {
-  FiBook,
-  FiDollarSign,
-  FiShoppingCart,
-  FiFilm,
-  FiHome,
-  FiShoppingBag,
-  FiEdit,
-} from "react-icons/fi";
 import { ApexOptions } from "apexcharts";
 import dynamic from "next/dynamic";
 import { useContext, useEffect, useState } from "react";
@@ -56,37 +42,10 @@ const options: ApexOptions = {
   },
   xaxis: {
     categories: ["Estudos", "Alimentação", "Lazer", "Moradia", "Outros"],
+    labels: { show: false },
   },
   tooltip: { followCursor: true },
 };
-
-const series = [
-  {
-    name: "Último mês",
-    data: [
-      {
-        x: "Estudos",
-        y: 1850,
-      },
-      {
-        x: "Alimentação",
-        y: 200,
-      },
-      {
-        x: "Lazer",
-        y: 100,
-      },
-      {
-        x: "Moradia",
-        y: 1200,
-      },
-      {
-        x: "Outros",
-        y: 1500,
-      },
-    ],
-  },
-];
 
 type Extracts = {
   id: string;
@@ -94,11 +53,23 @@ type Extracts = {
   amount: number;
   type: "credit" | "debit";
   userId: number;
+  categoryId: number;
+};
+
+type CategoryAmouts = {
+  lazer: number;
+  alimentação: number;
+  moradia: number;
+  estudos: number;
+  outros: number;
 };
 
 const Dashboard: NextPage = () => {
   const { user, isAuthenticated } = useContext(AuthContext);
   const [extracts, setExtracts] = useState([] as Extracts[]);
+  const [categoriesAmouts, setCategoriesAmouts] = useState(
+    {} as CategoryAmouts
+  );
 
   useEffect(() => {
     async function getExtracts() {
@@ -113,10 +84,59 @@ const Dashboard: NextPage = () => {
       }
     }
 
+    async function getCategoriesAmouts() {
+      try {
+        const response = await api.get("categories", {
+          params: { userId: user?.id },
+        });
+        const amountsArray = response.data.categories;
+        const amounts: CategoryAmouts = {
+          lazer: amountsArray[0].total,
+          alimentação: amountsArray[2].total,
+          moradia: amountsArray[3].total,
+          estudos: amountsArray[4].total,
+          outros: amountsArray[5].total,
+        };
+
+        setCategoriesAmouts(amounts);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
     if (user) {
       getExtracts();
+      getCategoriesAmouts();
     }
   }, [user]);
+
+  const series = [
+    {
+      name: "Último mês",
+      data: [
+        {
+          x: "Estudos",
+          y: categoriesAmouts.estudos,
+        },
+        {
+          x: "Alimentação",
+          y: categoriesAmouts.alimentação,
+        },
+        {
+          x: "Lazer",
+          y: categoriesAmouts.lazer,
+        },
+        {
+          x: "Moradia",
+          y: categoriesAmouts.moradia,
+        },
+        {
+          x: "Outros",
+          y: categoriesAmouts.outros,
+        },
+      ],
+    },
+  ];
 
   return (
     <>
@@ -141,62 +161,13 @@ const Dashboard: NextPage = () => {
                     <DescriptionItem
                       key={item.id}
                       id={item.id}
+                      userId={item.userId}
+                      category={item.categoryId}
                       description={item.description}
                       amount={item.amount}
                       type={item.type}
                     />
                   ))}
-
-                  {/* <Tr>
-                    <Td>Salário mensal</Td>
-                    <Td color="green">+R$4.500,00</Td>
-                    <Td>
-                      <Tag size="lg" colorScheme="gray" borderRadius="full">
-                        <Icon as={FiDollarSign} mr="0.5rem" />
-                        <TagLabel>Recebíveis</TagLabel>
-                      </Tag>
-                    </Td>
-                  </Tr>
-                  <Tr>
-                    <Td>Compras de supermercado</Td>
-                    <Td color="red">-R$200,00</Td>
-                    <Td>
-                      <Tag size="lg" colorScheme="green" borderRadius="full">
-                        <Icon as={FiShoppingCart} mr="0.5rem" />
-                        <TagLabel>Alimentação</TagLabel>
-                      </Tag>
-                    </Td>
-                  </Tr>
-                  <Tr>
-                    <Td>Skin no League of Legends</Td>
-                    <Td color="red">-R$100,00</Td>
-                    <Td>
-                      <Tag size="lg" colorScheme="yellow" borderRadius="full">
-                        <Icon as={FiFilm} mr="0.5rem" />
-                        <TagLabel>Lazer</TagLabel>
-                      </Tag>
-                    </Td>
-                  </Tr>
-                  <Tr>
-                    <Td>Aluguel</Td>
-                    <Td color="red">-R$1200,00</Td>
-                    <Td>
-                      <Tag size="lg" colorScheme="red" borderRadius="full">
-                        <Icon as={FiHome} mr="0.5rem" />
-                        <TagLabel>Moradia</TagLabel>
-                      </Tag>
-                    </Td>
-                  </Tr>
-                  <Tr>
-                    <Td>Ave rara contrabandeada</Td>
-                    <Td color="red">-R$1500,00</Td>
-                    <Td>
-                      <Tag size="lg" colorScheme="purple" borderRadius="full">
-                        <Icon as={FiShoppingBag} mr="0.5rem" />
-                        <TagLabel>Outros</TagLabel>
-                      </Tag>
-                    </Td>
-                  </Tr> */}
                 </Tbody>
               </Table>
 

@@ -9,42 +9,72 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { FiBook, FiCheck, FiEdit } from "react-icons/fi";
+import { api } from "../services/api";
+import { useRouter } from "next/router";
+import { CategoryIcon } from "./CategoryIcon";
 
 interface DescriptionItemProps {
   id: string;
+  userId: number;
   description: string;
   amount: number;
   type: "credit" | "debit";
+  category: number;
 }
-
-type Category =
-  | "Estudos"
-  | "Recebíveis"
-  | "Alimentação"
-  | "Lazer"
-  | "Moradia"
-  | "Outros";
-type ItemColor = "cyan" | "gray" | "green" | "yellow" | "red" | "purple";
-type ItemIcon =
-  | "FiBook"
-  | "FiDollarSign"
-  | "FiShoppingCart"
-  | "FiFilm"
-  | "FiHome"
-  | "FiShoppingBag";
 
 export function DescriptionItem({
   id,
+  userId,
   description,
   amount,
   type,
+  category,
 }: DescriptionItemProps) {
   const [editable, setEditable] = useState(false);
   const [newCategory, setNewCategory] = useState("");
+  const router = useRouter();
 
-  function handleEditDescription() {
-    console.log(newCategory);
+  const categories = {
+    lazer: 1,
+    recebíveis: 2,
+    alimentação: 3,
+    moradia: 4,
+    estudos: 5,
+    outros: 6,
+  };
+
+  const icons = {
+    lazer: "FiFilm",
+    recebíveis: "FiDollarSign",
+    alimentação: "FiShoppingCart",
+    moradia: "FiHome",
+    estudos: "FiBook",
+    outros: "FiShoppingBag",
+  };
+
+  const iconsColors = {
+    lazer: "yellow",
+    recebíveis: "gray",
+    alimentação: "green",
+    moradia: "red",
+    estudos: "cyan",
+    outros: "purple",
+  };
+
+  function getKeyByValue(object: any, value: number) {
+    return Object.keys(object)[value - 1];
+  }
+
+  async function handleEditDescription() {
+    if (newCategory != null) {
+      try {
+        await api.patch(`extracts/${id}`, { category: newCategory, userId });
+      } catch (err) {
+        console.log(err);
+      }
+    }
     setEditable(false);
+    router.reload();
   }
 
   return (
@@ -56,7 +86,10 @@ export function DescriptionItem({
       </Td>
       <Td flexDirection="row">
         {editable ? (
-          <Select onChange={(e) => setNewCategory(e.target.value)}>
+          <Select
+            placeholder="Selecionar"
+            onChange={(e) => setNewCategory(e.target.value)}
+          >
             <option value="estudos">Estudos</option>
             <option value="recebíveis">Recebíveis</option>
             <option value="alimentação">Alimentação</option>
@@ -65,10 +98,23 @@ export function DescriptionItem({
             <option value="outros">Outros</option>
           </Select>
         ) : (
-          <Tag size="lg" colorScheme="cyan" borderRadius="full">
-            <Icon as={FiBook} mr="0.5rem" />
-            <TagLabel>Estudos</TagLabel>
-          </Tag>
+          <>
+            {category && (
+              <Tag
+                size="lg"
+                colorScheme={iconsColors[getKeyByValue(categories, category)]}
+                borderRadius="full"
+              >
+                <CategoryIcon
+                  categoryType={icons[getKeyByValue(categories, category)]}
+                />
+                <TagLabel>
+                  {getKeyByValue(categories, category).charAt(0).toUpperCase() +
+                    getKeyByValue(categories, category).slice(1)}
+                </TagLabel>
+              </Tag>
+            )}
+          </>
         )}
       </Td>
       <Td>
