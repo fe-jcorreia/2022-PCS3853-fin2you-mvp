@@ -82,7 +82,7 @@ export function DescriptionItem({
       <Td>{description}</Td>
       <Td color={type === "debit" ? "red" : "green"}>
         {type === "debit" ? "-" : ""}
-        R${amount},00
+        R${amount}
       </Td>
       <Td flexDirection="row">
         {editable ? (
