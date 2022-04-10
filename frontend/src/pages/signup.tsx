@@ -1,13 +1,30 @@
 import {
   Button,
+  Checkbox,
   Heading,
   HStack,
+  Icon,
   Image,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Text,
+  useDisclosure,
   useToast,
   VStack,
 } from "@chakra-ui/react";
 import { Input } from "../components/Input";
-import { FiClipboard, FiMail, FiUser, FiLock } from "react-icons/fi";
+import {
+  FiClipboard,
+  FiMail,
+  FiUser,
+  FiLock,
+  FiCheckCircle,
+} from "react-icons/fi";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -45,6 +62,8 @@ const Signup: NextPage = () => {
   });
   const errors = formState.errors;
   const toast = useToast();
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -121,15 +140,51 @@ const Signup: NextPage = () => {
               {...register("password")}
             />
 
+            <Checkbox required type="therms">
+              Aceito os termos de uso - Open Banking
+            </Checkbox>
+            <Button variant="ghost" size='xs' onClick={onOpen}>
+              Termos Open Banking
+            </Button>
+
             <Button
               w="100%"
-              type="submit"
               mt="2rem"
               colorScheme="red"
+              type="submit"
               isLoading={formState.isSubmitting}
             >
               Criar conta
             </Button>
+
+            <Modal isOpen={isOpen} onClose={onClose}>
+              <ModalOverlay />
+              <ModalContent>
+                <ModalHeader>Open Banking</ModalHeader>
+                <ModalCloseButton />
+                <ModalBody textAlign="center">
+                  <Icon as={FiCheckCircle} boxSize="10rem" color="green.500" />
+                  <br />
+                  <br />
+                  Desejo permitir a utilização dos meus dados bancários na
+                  aplicação Open Banking Fin2You.
+                </ModalBody>
+
+                <ModalFooter>
+                  <Button
+                    onClick={onClose}
+                    isLoading={formState.isSubmitting}
+                    colorScheme="red"
+                    mr={3}
+                  >
+                    Aceitar
+                  </Button>
+                  <Button variant="ghost" onClick={onClose}>
+                    Não aceitar
+                  </Button>
+                </ModalFooter>
+              </ModalContent>
+            </Modal>
           </VStack>
 
           <Image src="/img/money-care.png" alt="money-care" />
