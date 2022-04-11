@@ -51,7 +51,7 @@ type Extracts = {
   id: string;
   description: string;
   amount: number;
-  type: "credit" | "debit";
+  type: "CREDITO" | "DEBITO";
   userId: number;
   categoryId: number;
 };
@@ -90,13 +90,23 @@ const Dashboard: NextPage = () => {
           params: { userId: user?.id },
         });
         const amountsArray = response.data.categories;
-        const amounts: CategoryAmouts = {
-          lazer: amountsArray[0].total,
-          alimentação: amountsArray[2].total,
-          moradia: amountsArray[3].total,
-          estudos: amountsArray[4].total,
-          outros: amountsArray[5].total,
+        let amounts: CategoryAmouts = {
+          lazer: 0,
+          alimentação: 0,
+          moradia: 0,
+          estudos: 0,
+          outros: 0,
         };
+
+        console.log(amountsArray);
+
+        amountsArray?.forEach((item: any) => {
+          if (item.id === ((user.id - 5) * 6) + 1) amounts.lazer = +item.total;
+          else if (item.id === ((user.id - 5) * 6) + 3) amounts.alimentação = +item.total;
+          else if (item.id === ((user.id - 5) * 6) + 4) amounts.moradia = +item.total;
+          else if (item.id === ((user.id - 5) * 6) + 5) amounts.estudos = +item.total;
+          else if (item.id === ((user.id - 5) * 6) + 6) amounts.outros = +item.total;
+        });
 
         setCategoriesAmouts(amounts);
       } catch (err) {
@@ -116,23 +126,23 @@ const Dashboard: NextPage = () => {
       data: [
         {
           x: "Estudos",
-          y: categoriesAmouts.estudos,
+          y: categoriesAmouts?.estudos,
         },
         {
           x: "Alimentação",
-          y: categoriesAmouts.alimentação,
+          y: categoriesAmouts?.alimentação,
         },
         {
           x: "Lazer",
-          y: categoriesAmouts.lazer,
+          y: categoriesAmouts?.lazer,
         },
         {
           x: "Moradia",
-          y: categoriesAmouts.moradia,
+          y: categoriesAmouts?.moradia,
         },
         {
           x: "Outros",
-          y: categoriesAmouts.outros,
+          y: categoriesAmouts?.outros,
         },
       ],
     },

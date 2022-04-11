@@ -18,7 +18,7 @@ interface DescriptionItemProps {
   userId: number;
   description: string;
   amount: number;
-  type: "credit" | "debit";
+  type: "CREDITO" | "DEBITO";
   category: number;
 }
 
@@ -35,12 +35,12 @@ export function DescriptionItem({
   const router = useRouter();
 
   const categories = {
-    lazer: 1,
-    recebíveis: 2,
-    alimentação: 3,
-    moradia: 4,
-    estudos: 5,
-    outros: 6,
+    lazer: (userId - 5) * 6 + 1,
+    recebíveis: (userId - 5) * 6 + 2,
+    alimentação: (userId - 5) * 6 + 3,
+    moradia: (userId - 5) * 6 + 4,
+    estudos: (userId - 5) * 6 + 5,
+    outros: (userId - 5) * 6 + 6,
   };
 
   const icons = {
@@ -62,7 +62,7 @@ export function DescriptionItem({
   };
 
   function getKeyByValue(object: any, value: number) {
-    return Object.keys(object)[value - 1];
+    return Object.keys(object)[value - ((userId - 5) * 6 + 1)];
   }
 
   async function handleEditDescription() {
@@ -80,8 +80,8 @@ export function DescriptionItem({
   return (
     <Tr>
       <Td>{description}</Td>
-      <Td color={type === "debit" ? "red" : "green"}>
-        {type === "debit" ? "-" : ""}
+      <Td color={type === "DEBITO" ? "red" : "green"}>
+        {type === "DEBITO" ? "-" : ""}
         R${amount}
       </Td>
       <Td flexDirection="row">
@@ -109,8 +109,11 @@ export function DescriptionItem({
                   categoryType={icons[getKeyByValue(categories, category)]}
                 />
                 <TagLabel>
-                  {getKeyByValue(categories, category).charAt(0).toUpperCase() +
-                    getKeyByValue(categories, category).slice(1)}
+                  {getKeyByValue(categories, category) &&
+                    getKeyByValue(categories, category)
+                      .charAt(0)
+                      .toUpperCase() +
+                      getKeyByValue(categories, category).slice(1)}
                 </TagLabel>
               </Tag>
             )}
